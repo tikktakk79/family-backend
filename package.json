@@ -1,0 +1,36 @@
+{
+  "name": "family-backend",
+  "version": "1.0.0",
+  "description": "Backend for family app",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build-babel": "babel server.js .env src -d build",
+    "clean": "rm -rf build && mkdir build",
+    "build": "npm run clean && npm run build-babel && cp .env ./build",
+    "start": "node ./build/server.js"
+  },
+  "keywords": [
+    "nodejs",
+    "mysql"
+  ],
+  "author": "Marten",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^5.1.0",
+    "core-js": "^3.27.1",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "jsonwebtoken": "^9.0.0",
+    "mysql": "^2.18.1",
+    "mysql2": "^3.0.1"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.20.7",
+    "@babel/core": "^7.20.12",
+    "@babel/preset-env": "^7.20.2",
+    "babel-loader": "^9.1.2",
+    "babel-watch": "^7.7.2"
+  }
+}
