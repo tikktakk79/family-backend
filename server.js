@@ -8,6 +8,7 @@ import "regenerator-runtime/runtime"
 const cors = require("cors")
 
 import UserWithDb from "./usingDB/controllers/users"
+import Article from "./usingDB/controllers/article"
 import getData from "./usingDb/controllers/getdata.js"
 
 const app = express()
@@ -32,6 +33,8 @@ let corsOptions = {
 
 app.use(express.json())
 app.use(cors(corsOptions))
+app.use(express.json({extended: true}))
+app.use(express.urlencoded({ extended: true, limit: '4mb' }))
 
 app.get("/", (req, res) => {
   return res
@@ -40,6 +43,10 @@ app.get("/", (req, res) => {
 })
 
 app.post("/api/setpass", User.setPassword)
+app.post("/api/login", User.loginUser)
+app.post("/api/addarticle", Article.addArticle)
+app.post("/api/editarticle", Article.editArticle)
+app.get("/api/getarticles", Article.getArticles)
 
 const PORT = process.env.PORT || 3000
 app.listen(PORT, () => {

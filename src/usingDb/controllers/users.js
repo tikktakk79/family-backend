@@ -124,6 +124,7 @@ const User = {
       console.log("2We got to here!")
       console.log("AND HERE")
       console.log("UNAME", req.body.username)
+      console.log("PASSWORD", req.body.password)
       
       let rows 
 
@@ -151,7 +152,7 @@ const User = {
       }
       console.log("333We got to here!")
       console.log("Användarnamn stämmer")
-      if (!helper.comparePassword(rows[0].losenord, req.body.password)) {
+      if (!helper.comparePassword(rows[0].password, req.body.password)) {
         console.log("Compare pasword sket sig..")
         let errObj = {statusText: "Current password does not match"}
         res.status(400).send(errObj)
@@ -159,7 +160,8 @@ const User = {
       }
 
       console.log("KOM enda hit")
-      const token = helper.generateToken(rows[0].anvandarnamn)
+      const token = helper.generateToken(rows[0].username)
+      console.log("Token", token)
       return res.status(200).send({ token })
     } catch (error) {
       console.log("ERROR", error)
@@ -217,7 +219,7 @@ const User = {
   },
 
   async setPassword(req, res) {
-    console.log("Username from changePassword:", req.body.username),
+    console.log("Userid from changePassword:", req.body.userid),
     console.log("New password:", req.body.password)
     console.log("Code:", req.body.code)
 
@@ -225,35 +227,45 @@ const User = {
       return res.status(400).send({ message: "Lösenord ej angivet" })
     }
     console.log("222We got to here!")
-    const createQuery = "SELECT * FROM user WHERE username = ?"
+    const createQuery = "SELECT * FROM user WHERE id = ?"
 
     try {
-      const rows = await db.query(createQuery, [req.body.username])
+      const rows = await db.query(createQuery, [req.body.userid])
+      console.log("rows", rows)
       console.log("Queryn funkade")
       if (!rows[0]) {
+        console.log("No match")
         return res
           .status(400)
           .send({ message: "Inloggningsuppgifterna du angav är felaktiga" })
-      } else if (!rows[0].code !== req.body.code) {
+      } else if (rows[0].pass_code !== req.body.code) {
+        console.log("Fel kod", typeof rows[0].pass_code, typeof req.body.code)
         return res
           .status(400)
           .send({ message: "Felaktig kod angiven" })
+      } else if(rows[0].password !== null) {
+        console.log("Password is not null")
+        return res
+          .status(400)
+          .send({ message: "Lösenord är redan sparat" })
       }
       console.log("333We got to here!")
 
       const passwordQuery =
         `UPDATE user
           SET password = ?
-          WHERE username = ?`
+          WHERE id = ?`
 
       const hashPassword = helper.hashPassword(req.body.password)
+      console.log("hashPassword", hashPassword)
       try {
         await db.query(passwordQuery, [
-          hashPassword, req.body.username
+          hashPassword, req.body.userid
         ])
         console.log("Lösenord bytt")
         return res.status(204).send()
       } catch (error) {
+        print(error)
         return res.status(400).send(error)
       }
     } catch (error) {
@@ -358,7 +370,6 @@ const User = {
     res.sendFile("verification-success.html", { root: path.join(__dirname, '../../../public') }) 
  
   }
-
 }
 
 export default User

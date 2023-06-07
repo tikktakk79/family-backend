@@ -44,7 +44,8 @@ var _default = {
               console.log("Query failed", err);
               reject(err);
             } else {
-              console.log("Query resolved", rows);
+              console.log("Query resolved");
+              // console.log(rows)
               resolve(rows);
               console.log("Code after resolve");
             }
