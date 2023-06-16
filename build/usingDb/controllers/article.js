@@ -50,6 +50,7 @@ var Article = {
             console.log("tags", tags);
             if (tags) {
               console.log("Needs to update tags", tags);
+              Article.editTags(req.body.id, tags);
             }
             createQuery = "\n      UPDATE article \n      SET \n        heading = ?,\n        story = ?,\n        category = ?,\n        year_event = ?\n      WHERE\n        id = ?;\n     ";
             values = [req.body.heading, req.body.story, req.body.category, req.body.year, req.body.id];
@@ -95,31 +96,248 @@ var Article = {
       }, _callee3, null, [[1, 8]]);
     }))();
   },
-  addTag: function addTag(articleId, tags) {
+  editTags: function editTags(articleId, tags) {
     return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee4() {
-      var queryCheckTag, existingTags, newTags, values;
-      return _regeneratorRuntime().wrap(function _callee4$(_context4) {
-        while (1) switch (_context4.prev = _context4.next) {
+      var tagQuery, tagArticleQuery, allTags, oldTags, newTags, existingTags, tagsRemove, _loop, i, _loop2, q, newTableTags, tagsFound, _loop3, _i, queryInsert, queryFind, queryInsertTagLink, _q, dbNewTags, j, tag, s;
+      return _regeneratorRuntime().wrap(function _callee4$(_context7) {
+        while (1) switch (_context7.prev = _context7.next) {
           case 0:
             console.log("articleId", articleId);
             console.log("tags", tags);
-            queryCheckTag = "\n      SELECT * FROM tag\n      WHERE tag_name = ?\n      ";
-            existingTags = [];
-            newTags = [];
-            _context4.t0 = _regeneratorRuntime().keys(tags);
+            tagQuery = "\n      SELECT * FROM tag\n      ";
+            tagArticleQuery = "\n      SELECT tag.id, tag.tag_name \n      FROM tag\n      JOIN article_tag \n      ON article_tag.tag_id = tag.id\n      WHERE article_tag.article_id = ?\n      ;\n    ";
+            _context7.next = 6;
+            return _db["default"].query(tagQuery);
           case 6:
-            if ((_context4.t1 = _context4.t0()).done) {
-              _context4.next = 12;
+            allTags = _context7.sent;
+            _context7.next = 9;
+            return _db["default"].query(tagArticleQuery, [articleId]);
+          case 9:
+            oldTags = _context7.sent;
+            console.log("oldTags", oldTags);
+            console.log("allTags", allTags);
+            newTags = [];
+            existingTags = [];
+            tagsRemove = [];
+            _loop = /*#__PURE__*/_regeneratorRuntime().mark(function _loop(i) {
+              var tagHits;
+              return _regeneratorRuntime().wrap(function _loop$(_context4) {
+                while (1) switch (_context4.prev = _context4.next) {
+                  case 0:
+                    console.log("tag", tags[i]);
+                    tagHits = oldTags.filter(function (x) {
+                      return x.tag_name.toLowerCase() === tags[i].text.toLowerCase();
+                    });
+                    if (tagHits.length > 0) {
+                      existingTags.push(tags[i]);
+                    } else {
+                      newTags.push(tags[i]);
+                    }
+                  case 3:
+                  case "end":
+                    return _context4.stop();
+                }
+              }, _loop);
+            });
+            _context7.t0 = _regeneratorRuntime().keys(tags);
+          case 17:
+            if ((_context7.t1 = _context7.t0()).done) {
+              _context7.next = 22;
               break;
             }
-            tag = _context4.t1.value;
-            values = [];
-            return _context4.abrupt("return");
-          case 12:
+            i = _context7.t1.value;
+            return _context7.delegateYield(_loop(i), "t2", 20);
+          case 20:
+            _context7.next = 17;
+            break;
+          case 22:
+            console.log("oldTags", oldTags);
+            _loop2 = /*#__PURE__*/_regeneratorRuntime().mark(function _loop2(q) {
+              var noTags;
+              return _regeneratorRuntime().wrap(function _loop2$(_context5) {
+                while (1) switch (_context5.prev = _context5.next) {
+                  case 0:
+                    noTags = existingTags.filter(function (t) {
+                      return t.text.toLowerCase() === oldTags[q].tag_name.toLowerCase();
+                    });
+                    if (noTags < 1) {
+                      tagsRemove.push(oldTags[q]);
+                    }
+                  case 2:
+                  case "end":
+                    return _context5.stop();
+                }
+              }, _loop2);
+            });
+            _context7.t3 = _regeneratorRuntime().keys(oldTags);
+          case 25:
+            if ((_context7.t4 = _context7.t3()).done) {
+              _context7.next = 30;
+              break;
+            }
+            q = _context7.t4.value;
+            return _context7.delegateYield(_loop2(q), "t5", 28);
+          case 28:
+            _context7.next = 25;
+            break;
+          case 30:
+            console.log("tagsRemove", tagsRemove);
+            newTableTags = [];
+            tagsFound = [];
+            _loop3 = /*#__PURE__*/_regeneratorRuntime().mark(function _loop3(_i) {
+              var hits;
+              return _regeneratorRuntime().wrap(function _loop3$(_context6) {
+                while (1) switch (_context6.prev = _context6.next) {
+                  case 0:
+                    hits = newTags.filter(function (q) {
+                      return q.text.toLowerCase() === allTags[_i].tag_name.toLowerCase();
+                    });
+                    console.log("hits", hits);
+                    if (hits.length > 0) {
+                      tagsFound.push(hits[0]);
+                    }
+                    newTableTags = newTags.filter(function (tag) {
+                      return !tagsFound.includes(tag);
+                    });
+                  case 4:
+                  case "end":
+                    return _context6.stop();
+                }
+              }, _loop3);
+            });
+            _context7.t6 = _regeneratorRuntime().keys(allTags);
+          case 35:
+            if ((_context7.t7 = _context7.t6()).done) {
+              _context7.next = 40;
+              break;
+            }
+            _i = _context7.t7.value;
+            return _context7.delegateYield(_loop3(_i), "t8", 38);
+          case 38:
+            _context7.next = 35;
+            break;
+          case 40:
+            console.log("newTableTags", newTableTags);
+            queryInsert = "\n      INSERT INTO tag (tag_name)\n      VALUES (?)\n      ;\n    ";
+            queryFind = "\n      SELECT * FROM tag \n      WHERE \n        tag_name = ?\n      LIMIT 1\n      ;\n      ";
+            queryInsertTagLink = "\n      INSERT INTO article_tag (article_id, tag_id)\n      VALUES (?, ?)\n    ";
+            _context7.t9 = _regeneratorRuntime().keys(newTableTags);
+          case 45:
+            if ((_context7.t10 = _context7.t9()).done) {
+              _context7.next = 51;
+              break;
+            }
+            _q = _context7.t10.value;
+            _context7.next = 49;
+            return _db["default"].query(queryInsert, [newTableTags[_q].text]);
+          case 49:
+            _context7.next = 45;
+            break;
+          case 51:
+            console.log("newTags", newTags);
+            dbNewTags = [];
+            _context7.t11 = _regeneratorRuntime().keys(newTags);
+          case 54:
+            if ((_context7.t12 = _context7.t11()).done) {
+              _context7.next = 63;
+              break;
+            }
+            j = _context7.t12.value;
+            _context7.next = 58;
+            return _db["default"].query(queryFind, [newTags[j].text]);
+          case 58:
+            tag = _context7.sent;
+            console.log("tag from newTags", tag);
+            dbNewTags.push(tag[0]);
+            _context7.next = 54;
+            break;
+          case 63:
+            console.log("dbNewTags", dbNewTags);
+            _context7.t13 = _regeneratorRuntime().keys(dbNewTags);
+          case 65:
+            if ((_context7.t14 = _context7.t13()).done) {
+              _context7.next = 72;
+              break;
+            }
+            s = _context7.t14.value;
+            console.log("dbNewTags[s]", dbNewTags[s]);
+            _context7.next = 70;
+            return _db["default"].query(queryInsertTagLink, [articleId, dbNewTags[s].id]);
+          case 70:
+            _context7.next = 65;
+            break;
+          case 72:
+            console.log("dbNewTags", dbNewTags);
+            console.log("tagsFound", tagsFound);
+            console.log("newTableTags", newTableTags);
+            console.log("newTags", newTags);
+            console.log("existingTags", existingTags);
+          case 77:
           case "end":
-            return _context4.stop();
+            return _context7.stop();
         }
       }, _callee4);
+    }))();
+  },
+  getStoryTags: function getStoryTags(req, res) {
+    return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee5() {
+      var createQuery, rows;
+      return _regeneratorRuntime().wrap(function _callee5$(_context8) {
+        while (1) switch (_context8.prev = _context8.next) {
+          case 0:
+            createQuery = "\n      SELECT * from tag;\n    ";
+            _context8.prev = 1;
+            _context8.next = 4;
+            return _db["default"].query(createQuery);
+          case 4:
+            rows = _context8.sent;
+            return _context8.abrupt("return", res.status(200).send(rows));
+          case 8:
+            _context8.prev = 8;
+            _context8.t0 = _context8["catch"](1);
+            console.log("Error in getStoryTags", _context8.t0);
+            return _context8.abrupt("return", res.status(400).send(_context8.t0));
+          case 12:
+          case "end":
+            return _context8.stop();
+        }
+      }, _callee5, null, [[1, 8]]);
+    }))();
+  },
+  getTagLinks: function getTagLinks(req, res) {
+    return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee6() {
+      var createQuery, rows;
+      return _regeneratorRuntime().wrap(function _callee6$(_context9) {
+        while (1) switch (_context9.prev = _context9.next) {
+          case 0:
+            createQuery = "\n      SELECT * from article_tag;\n    ";
+            _context9.prev = 1;
+            _context9.next = 4;
+            return _db["default"].query(createQuery);
+          case 4:
+            rows = _context9.sent;
+            return _context9.abrupt("return", res.status(200).send(rows));
+          case 8:
+            _context9.prev = 8;
+            _context9.t0 = _context9["catch"](1);
+            console.log("Error in getTagLinks", _context9.t0);
+            return _context9.abrupt("return", res.status(400).send(_context9.t0));
+          case 12:
+          case "end":
+            return _context9.stop();
+        }
+      }, _callee6, null, [[1, 8]]);
+    }))();
+  },
+  insertIntoAT: function insertIntoAT() {
+    return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee7() {
+      return _regeneratorRuntime().wrap(function _callee7$(_context10) {
+        while (1) switch (_context10.prev = _context10.next) {
+          case 0:
+          case "end":
+            return _context10.stop();
+        }
+      }, _callee7);
     }))();
   }
 };

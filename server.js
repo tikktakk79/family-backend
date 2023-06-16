@@ -47,6 +47,8 @@ app.post("/api/login", User.loginUser)
 app.post("/api/addarticle", Article.addArticle)
 app.post("/api/editarticle", Article.editArticle)
 app.get("/api/getarticles", Article.getArticles)
+app.get("/api/getstorytags", Article.getStoryTags)
+app.get("/api/gettaglinks", Article.getTagLinks)
 
 const PORT = process.env.PORT || 3000
 app.listen(PORT, () => {
