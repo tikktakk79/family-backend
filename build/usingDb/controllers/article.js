@@ -97,8 +97,9 @@ var Article = {
     }))();
   },
   editTags: function editTags(articleId, tags) {
+    var _this = this;
     return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee4() {
-      var tagQuery, tagArticleQuery, allTags, oldTags, newTags, existingTags, tagsRemove, _loop, i, _loop2, q, newTableTags, tagsFound, _loop3, _i, queryInsert, queryFind, queryInsertTagLink, _q, dbNewTags, j, tag, s;
+      var tagQuery, tagArticleQuery, allTags, oldTags, newTags, existingTags, tagsRemove, _loop, i, _loop2, q, newTableTags, tagsFound, _loop3, _i;
       return _regeneratorRuntime().wrap(function _callee4$(_context7) {
         while (1) switch (_context7.prev = _context7.next) {
           case 0:
@@ -218,61 +219,13 @@ var Article = {
             break;
           case 40:
             console.log("newTableTags", newTableTags);
-            queryInsert = "\n      INSERT INTO tag (tag_name)\n      VALUES (?)\n      ;\n    ";
-            queryFind = "\n      SELECT * FROM tag \n      WHERE \n        tag_name = ?\n      LIMIT 1\n      ;\n      ";
-            queryInsertTagLink = "\n      INSERT INTO article_tag (article_id, tag_id)\n      VALUES (?, ?)\n    ";
-            _context7.t9 = _regeneratorRuntime().keys(newTableTags);
-          case 45:
-            if ((_context7.t10 = _context7.t9()).done) {
-              _context7.next = 51;
-              break;
-            }
-            _q = _context7.t10.value;
-            _context7.next = 49;
-            return _db["default"].query(queryInsert, [newTableTags[_q].text]);
-          case 49:
-            _context7.next = 45;
-            break;
-          case 51:
-            console.log("newTags", newTags);
-            dbNewTags = [];
-            _context7.t11 = _regeneratorRuntime().keys(newTags);
-          case 54:
-            if ((_context7.t12 = _context7.t11()).done) {
-              _context7.next = 63;
-              break;
-            }
-            j = _context7.t12.value;
-            _context7.next = 58;
-            return _db["default"].query(queryFind, [newTags[j].text]);
-          case 58:
-            tag = _context7.sent;
-            console.log("tag from newTags", tag);
-            dbNewTags.push(tag[0]);
-            _context7.next = 54;
-            break;
-          case 63:
-            console.log("dbNewTags", dbNewTags);
-            _context7.t13 = _regeneratorRuntime().keys(dbNewTags);
-          case 65:
-            if ((_context7.t14 = _context7.t13()).done) {
-              _context7.next = 72;
-              break;
-            }
-            s = _context7.t14.value;
-            console.log("dbNewTags[s]", dbNewTags[s]);
-            _context7.next = 70;
-            return _db["default"].query(queryInsertTagLink, [articleId, dbNewTags[s].id]);
-          case 70:
-            _context7.next = 65;
-            break;
-          case 72:
-            console.log("dbNewTags", dbNewTags);
+            _this.removeTags(tagsRemove, articleId);
+            _this.insertTags(newTableTags, newTags, articleId);
             console.log("tagsFound", tagsFound);
             console.log("newTableTags", newTableTags);
             console.log("newTags", newTags);
             console.log("existingTags", existingTags);
-          case 77:
+          case 47:
           case "end":
             return _context7.stop();
         }
@@ -329,15 +282,107 @@ var Article = {
       }, _callee6, null, [[1, 8]]);
     }))();
   },
-  insertIntoAT: function insertIntoAT() {
+  insertTags: function insertTags(newTableTags, newTags, articleId) {
     return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee7() {
+      var queryInsert, queryFind, queryInsertTagLink, q, dbNewTags, j, tag, s;
       return _regeneratorRuntime().wrap(function _callee7$(_context10) {
         while (1) switch (_context10.prev = _context10.next) {
           case 0:
+            queryInsert = "\n      INSERT INTO tag (tag_name)\n      VALUES (?)\n      ;\n    ";
+            queryFind = "\n      SELECT * FROM tag \n      WHERE \n        tag_name = ?\n      LIMIT 1\n      ;\n      ";
+            queryInsertTagLink = "\n      INSERT INTO article_tag (article_id, tag_id)\n      VALUES (?, ?)\n    ";
+            _context10.t0 = _regeneratorRuntime().keys(newTableTags);
+          case 4:
+            if ((_context10.t1 = _context10.t0()).done) {
+              _context10.next = 10;
+              break;
+            }
+            q = _context10.t1.value;
+            _context10.next = 8;
+            return _db["default"].query(queryInsert, [newTableTags[q].text]);
+          case 8:
+            _context10.next = 4;
+            break;
+          case 10:
+            console.log("newTags", newTags);
+            dbNewTags = [];
+            _context10.t2 = _regeneratorRuntime().keys(newTags);
+          case 13:
+            if ((_context10.t3 = _context10.t2()).done) {
+              _context10.next = 22;
+              break;
+            }
+            j = _context10.t3.value;
+            _context10.next = 17;
+            return _db["default"].query(queryFind, [newTags[j].text]);
+          case 17:
+            tag = _context10.sent;
+            console.log("tag from newTags", tag);
+            dbNewTags.push(tag[0]);
+            _context10.next = 13;
+            break;
+          case 22:
+            console.log("dbNewTags", dbNewTags);
+            _context10.t4 = _regeneratorRuntime().keys(dbNewTags);
+          case 24:
+            if ((_context10.t5 = _context10.t4()).done) {
+              _context10.next = 31;
+              break;
+            }
+            s = _context10.t5.value;
+            console.log("dbNewTags[s]", dbNewTags[s]);
+            _context10.next = 29;
+            return _db["default"].query(queryInsertTagLink, [articleId, dbNewTags[s].id]);
+          case 29:
+            _context10.next = 24;
+            break;
+          case 31:
+            console.log("dbNewTags", dbNewTags);
+          case 32:
           case "end":
             return _context10.stop();
         }
       }, _callee7);
+    }))();
+  },
+  removeTags: function removeTags(tagsRemove, articleId) {
+    return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee8() {
+      var queryRemoveTags, findArticleTags, deleteTag, i, remainingTags;
+      return _regeneratorRuntime().wrap(function _callee8$(_context11) {
+        while (1) switch (_context11.prev = _context11.next) {
+          case 0:
+            queryRemoveTags = "\n      DELETE FROM article_tag\n      WHERE \n        article_id = ?\n      AND\n        tag_id = ?\n    ";
+            findArticleTags = "\n      SELECT * FROM article_tag\n      WHERE tag_id = ?\n    ";
+            deleteTag = "\n      DELETE FROM TAG WHERE id = ?\n    ";
+            _context11.t0 = _regeneratorRuntime().keys(tagsRemove);
+          case 4:
+            if ((_context11.t1 = _context11.t0()).done) {
+              _context11.next = 17;
+              break;
+            }
+            i = _context11.t1.value;
+            _context11.next = 8;
+            return _db["default"].query(queryRemoveTags, [articleId, tagsRemove[i].id]);
+          case 8:
+            _context11.next = 10;
+            return _db["default"].query(findArticleTags, [tagsRemove[i].id]);
+          case 10:
+            remainingTags = _context11.sent;
+            console.log("remainingTags", remainingTags);
+            if (!(remainingTags.length < 1)) {
+              _context11.next = 15;
+              break;
+            }
+            _context11.next = 15;
+            return _db["default"].query(deleteTag, [tagsRemove[i].id]);
+          case 15:
+            _context11.next = 4;
+            break;
+          case 17:
+          case "end":
+            return _context11.stop();
+        }
+      }, _callee8);
     }))();
   }
 };

@@ -137,6 +137,49 @@ const Article = {
 
     console.log("newTableTags", newTableTags)
 
+    this.removeTags(tagsRemove, articleId)
+  
+    this.insertTags(newTableTags, newTags, articleId)
+
+    console.log("tagsFound", tagsFound)
+    console.log("newTableTags", newTableTags)
+    console.log("newTags", newTags)
+    console.log("existingTags", existingTags)
+  },
+
+  async getStoryTags(req, res) {
+    let createQuery = `
+      SELECT * from tag;
+    `
+    try {
+      const rows  = await db.query(createQuery)
+
+      // console.log("Rows from getStoryTags", rows)
+
+      return res.status(200).send(rows)
+    } catch (error) {
+      console.log("Error in getStoryTags", error)
+      return res.status(400).send(error)
+    }
+  },
+
+  async getTagLinks(req, res) {
+    let createQuery = `
+      SELECT * from article_tag;
+    `
+    try {
+      const rows  = await db.query(createQuery)
+
+      // console.log("Rows from getTagLinks", rows)
+
+      return res.status(200).send(rows)
+    } catch (error) {
+      console.log("Error in getTagLinks", error)
+      return res.status(400).send(error)
+    }
+  },
+
+  async insertTags (newTableTags, newTags, articleId) {
     const queryInsert = `
       INSERT INTO tag (tag_name)
       VALUES (?)
@@ -177,49 +220,35 @@ const Article = {
     }
 
     console.log("dbNewTags", dbNewTags)
-    console.log("tagsFound", tagsFound)
-    console.log("newTableTags", newTableTags)
-    console.log("newTags", newTags)
-    console.log("existingTags", existingTags)
   },
+  async removeTags(tagsRemove, articleId) {
 
-  async getStoryTags(req, res) {
-    let createQuery = `
-      SELECT * from tag;
+    const queryRemoveTags = `
+      DELETE FROM article_tag
+      WHERE 
+        article_id = ?
+      AND
+        tag_id = ?
     `
-    try {
-      const rows  = await db.query(createQuery)
-
-      // console.log("Rows from getStoryTags", rows)
-
-      return res.status(200).send(rows)
-    } catch (error) {
-      console.log("Error in getStoryTags", error)
-      return res.status(400).send(error)
-    }
-  },
-
-  async getTagLinks(req, res) {
-    let createQuery = `
-      SELECT * from article_tag;
+    const findArticleTags = `
+      SELECT * FROM article_tag
+      WHERE tag_id = ?
     `
-    try {
-      const rows  = await db.query(createQuery)
 
-      // console.log("Rows from getTagLinks", rows)
+    const deleteTag = `
+      DELETE FROM TAG WHERE id = ?
+    `
 
-      return res.status(200).send(rows)
-    } catch (error) {
-      console.log("Error in getTagLinks", error)
-      return res.status(400).send(error)
+    for (const i in tagsRemove) {
+      await db.query(queryRemoveTags, [articleId, tagsRemove[i].id])
+      let remainingTags = await db.query(findArticleTags, [tagsRemove[i].id])
+      console.log("remainingTags", remainingTags)
+
+      if (remainingTags.length < 1) {
+        await db.query(deleteTag, [tagsRemove[i].id])
+      }
     }
-  },
-
-  async insertIntoAT () {
-
   }
-
-  
 }
 
 export default Article
