@@ -24,7 +24,7 @@ var User = {
    */
   createUser: function createUser(req, res) {
     return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
-      var hashPassword, removeDuplicate, createQuery, chosenProtocol, host, baseUrl, secretCode, values, mailOptions;
+      var hashPassword, createQuery, chosenProtocol, host, baseUrl, values;
       return _regeneratorRuntime().wrap(function _callee$(_context) {
         while (1) switch (_context.prev = _context.next) {
           case 0:
@@ -38,8 +38,7 @@ var User = {
             }));
           case 3:
             hashPassword = _helper["default"].hashPassword(req.body.password);
-            removeDuplicate = "DELETE FROM anvandare\n      WHERE\n        status = 'pending'\n      AND\n        email = ?\n    ";
-            createQuery = "INSERT INTO\n      anvandare (anvandarnamn, fornamn, efternamn, email, losenord, aktiveringskod)\n      VALUES (?, ?, ?, ?, ?, ?)\n      "; // const token = helper.generateToken(rows[0].anvandarnamn)
+            createQuery = "INSERT INTO\n      user (firstname, lastname, username,  email, passwd)\n      VALUES (?, ?, ?, ?, ?)\n      "; // const token = helper.generateToken(rows[0].anvandarnamn)
             // req.session.token = token
             // return res.status(201).send({ token })
             chosenProtocol = "https";
@@ -47,79 +46,38 @@ var User = {
             if (host.includes("localhost")) {
               chosenProtocol = "http";
             }
-            baseUrl = chosenProtocol + "://" + req.get("host");
-            secretCode = _helper["default"].createVerificationToken(req.body.email);
-            console.log("secret Code", secretCode);
-            values = [req.body.username, req.body.firstname, req.body.lastname, req.body.email, hashPassword,
-            //hashPassword
-            secretCode];
-            _context.prev = 13;
-            _context.next = 16;
-            return _db["default"].query(removeDuplicate, [values[3]]);
-          case 16:
-            _context.next = 21;
-            break;
-          case 18:
-            _context.prev = 18;
-            _context.t0 = _context["catch"](13);
-            console.log("Error in register db query", _context.t0);
-          case 21:
-            _context.prev = 21;
+            baseUrl = chosenProtocol + "://" + req.get("host"); //const secretCode = helper.createVerificationToken(req.body.email);
+            //console.log("secret Code", secretCode);
+            values = [req.body.firstname, req.body.lastname, req.body.username, req.body.email, hashPassword];
+            _context.prev = 10;
             console.log("Before create query in db");
-            _context.next = 25;
+            _context.next = 14;
             return _db["default"].query(createQuery, values);
-          case 25:
+          case 14:
             console.log("After create query");
-            _context.prev = 26;
-            mailOptions = {
-              from: process.env.EMAIL_ADDRESS,
-              to: req.body.email,
-              subject: 'Confirm registration',
-              text: "Anv\xE4nd f\xF6ljande l\xE4nk f\xF6r att aktivera ditt konto p\xE5 Radioskugga: ".concat(baseUrl, "/api/user/verification/verify-account/").concat(secretCode),
-              html: "<p>Anv\xE4nd f\xF6ljande l\xE4nk f\xF6r att aktivera ditt konto p\xE5 Radioskugga: &nbsp;<strong></p><h3><a href=\"".concat(baseUrl, "/api/user/verification/verify-account/").concat(secretCode, "\" target=\"_blank\">Aktivera konto</a></strong></h3>")
-            };
-            console.log("Trying to send email");
-            _context.next = 31;
-            return _helper["default"].transporter.sendMail(mailOptions, function (error, info) {
-              if (error) {
-                console.log("Error sending mail", error);
-              } else {
-                console.log('Email sent: ' + info.response);
-                return res.status(200).send();
-              }
-            });
-          case 31:
-            console.log("Mail sent");
-            _context.next = 37;
+            _context.next = 26;
             break;
-          case 34:
-            _context.prev = 34;
-            _context.t1 = _context["catch"](26);
-            console.log("Error in register db query", _context.t1);
-          case 37:
-            _context.next = 48;
-            break;
-          case 39:
-            _context.prev = 39;
-            _context.t2 = _context["catch"](21);
-            console.log("ERROR in register", _context.t2);
-            console.log("error routine", _context.t2.code);
+          case 17:
+            _context.prev = 17;
+            _context.t0 = _context["catch"](10);
+            console.log("ERROR in register", _context.t0);
+            console.log("error routine", _context.t0.code);
             console.log("Användarnamnet är upptaget");
-            if (!(_context.t2.code === "ER_DUP_ENTRY")) {
-              _context.next = 46;
+            if (!(_context.t0.code === "ER_DUP_ENTRY")) {
+              _context.next = 24;
               break;
             }
             return _context.abrupt("return", res.status(400).send({
               message: "Username taken"
             }));
-          case 46:
+          case 24:
             console.log("Something failed and I don't know what!");
-            return _context.abrupt("return", res.status(400).send(_context.t2));
-          case 48:
+            return _context.abrupt("return", res.status(400).send(_context.t0));
+          case 26:
           case "end":
             return _context.stop();
         }
-      }, _callee, null, [[13, 18], [21, 39], [26, 34]]);
+      }, _callee, null, [[10, 17]]);
     }))();
   },
   /**
@@ -190,7 +148,7 @@ var User = {
           case 34:
             console.log("333We got to here!");
             console.log("Användarnamn stämmer");
-            if (_helper["default"].comparePassword(rows[0].password, req.body.password)) {
+            if (_helper["default"].comparePassword(rows[0].passwd, req.body.password)) {
               _context2.next = 41;
               break;
             }

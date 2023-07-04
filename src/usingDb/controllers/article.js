@@ -248,6 +248,18 @@ const Article = {
         await db.query(deleteTag, [tagsRemove[i].id])
       }
     }
+  },
+  async getCategories(req, res) {
+    const createQuery = `SELECT * FROM category`
+
+    try {
+      const rows  = await db.query(createQuery)
+
+      return res.status(200).send(rows)
+    } catch (error) {
+      console.log("Error in getCategories", error)
+      return res.status(400).send(error)
+    }
   }
 }
 

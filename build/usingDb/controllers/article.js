@@ -384,6 +384,31 @@ var Article = {
         }
       }, _callee8);
     }))();
+  },
+  getCategories: function getCategories(req, res) {
+    return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee9() {
+      var createQuery, rows;
+      return _regeneratorRuntime().wrap(function _callee9$(_context12) {
+        while (1) switch (_context12.prev = _context12.next) {
+          case 0:
+            createQuery = "SELECT * FROM category";
+            _context12.prev = 1;
+            _context12.next = 4;
+            return _db["default"].query(createQuery);
+          case 4:
+            rows = _context12.sent;
+            return _context12.abrupt("return", res.status(200).send(rows));
+          case 8:
+            _context12.prev = 8;
+            _context12.t0 = _context12["catch"](1);
+            console.log("Error in getCategories", _context12.t0);
+            return _context12.abrupt("return", res.status(400).send(_context12.t0));
+          case 12:
+          case "end":
+            return _context12.stop();
+        }
+      }, _callee9, null, [[1, 8]]);
+    }))();
   }
 };
 var _default = Article;

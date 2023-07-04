@@ -44,11 +44,13 @@ app.get("/", (req, res) => {
 
 app.post("/api/setpass", User.setPassword)
 app.post("/api/login", User.loginUser)
-app.post("/api/addarticle", Article.addArticle)
-app.post("/api/editarticle", Article.editArticle)
-app.get("/api/getarticles", Article.getArticles)
-app.get("/api/getstorytags", Article.getStoryTags)
-app.get("/api/gettaglinks", Article.getTagLinks)
+app.post("/api/createuser", User.createUser)
+app.post("/api/addarticle", Auth.verifyToken, Article.addArticle)
+app.post("/api/editarticle", Auth.verifyToken, Article.editArticle)
+app.get("/api/getarticles", Auth.verifyToken, Article.getArticles)
+app.get("/api/getstorytags", Auth.verifyToken, Article.getStoryTags)
+app.get("/api/gettaglinks", Auth.verifyToken, Article.getTagLinks)
+app.get("/api/getcategories", Auth.verifyToken, Article.getCategories)
 
 const PORT = process.env.PORT || 3000
 app.listen(PORT, () => {

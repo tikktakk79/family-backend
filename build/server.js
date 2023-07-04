@@ -42,11 +42,13 @@ app.get("/", function (req, res) {
 });
 app.post("/api/setpass", User.setPassword);
 app.post("/api/login", User.loginUser);
+app.post("/api/createuser", User.createUser);
 app.post("/api/addarticle", _article["default"].addArticle);
 app.post("/api/editarticle", _article["default"].editArticle);
 app.get("/api/getarticles", _article["default"].getArticles);
 app.get("/api/getstorytags", _article["default"].getStoryTags);
 app.get("/api/gettaglinks", _article["default"].getTagLinks);
+app.get("/api/getcategories", _article["default"].getCategories);
 var PORT = process.env.PORT || 3000;
 app.listen(PORT, function () {
   console.log("Our app is running on port ".concat(PORT));

@@ -21,17 +21,9 @@ const User = {
 
     const hashPassword = helper.hashPassword(req.body.password)
 
-    const removeDuplicate = 
-    `DELETE FROM anvandare
-      WHERE
-        status = 'pending'
-      AND
-        email = ?
-    `
-
     const createQuery = `INSERT INTO
-      anvandare (anvandarnamn, fornamn, efternamn, email, losenord, aktiveringskod)
-      VALUES (?, ?, ?, ?, ?, ?)
+      user (firstname, lastname, username,  email, passwd)
+      VALUES (?, ?, ?, ?, ?)
       `
     // const token = helper.generateToken(rows[0].anvandarnamn)
     // req.session.token = token
@@ -47,64 +39,32 @@ const User = {
   
     let baseUrl = chosenProtocol + "://" + req.get("host")
 
-    const secretCode = helper.createVerificationToken(req.body.email);
+    //const secretCode = helper.createVerificationToken(req.body.email);
 
-    console.log("secret Code", secretCode);
+    //console.log("secret Code", secretCode);
 
     const values = [
-      req.body.username,
       req.body.firstname,
       req.body.lastname,
+      req.body.username,
       req.body.email,
-      hashPassword, //hashPassword
-      secretCode
+      hashPassword
     ]
-
-
-    try {
-      await db.query(removeDuplicate, [values[3]])
-      } catch (error){
-        console.log("Error in register db query", error);
-      }
 
     try {
       console.log("Before create query in db")
       await db.query(createQuery, values)
       console.log("After create query")
-
-      try {
-        
-        const mailOptions = {
-          from: process.env.EMAIL_ADDRESS,
-          to: req.body.email,
-          subject: 'Confirm registration',
-          text: `Använd följande länk för att aktivera ditt konto på Radioskugga: ${baseUrl}/api/user/verification/verify-account/${secretCode}`,
-          html: `<p>Använd följande länk för att aktivera ditt konto på Radioskugga: &nbsp;<strong></p><h3><a href="${baseUrl}/api/user/verification/verify-account/${secretCode}" target="_blank">Aktivera konto</a></strong></h3>`,
-        }
-        console.log("Trying to send email")
-        await helper.transporter.sendMail(mailOptions, function(error, info){
-          if (error) {
-          console.log("Error sending mail", error);
-          } else {
-            console.log('Email sent: ' + info.response);
-            return res.status(200).send()
-          }
-        });
-          console.log("Mail sent");
-        } catch (error){
-  
-        console.log("Error in register db query", error);
-        }
-      } catch (error) {
-        console.log("ERROR in register", error)
-        console.log("error routine", error.code);
-        console.log("Användarnamnet är upptaget");
-        if (error.code === "ER_DUP_ENTRY") {
-          return res.status(400).send({message: "Username taken"})
-        }
-        console.log("Something failed and I don't know what!")
-        return res.status(400).send(error)
+    } catch (error) {
+      console.log("ERROR in register", error)
+      console.log("error routine", error.code);
+      console.log("Användarnamnet är upptaget");
+      if (error.code === "ER_DUP_ENTRY") {
+        return res.status(400).send({message: "Username taken"})
       }
+      console.log("Something failed and I don't know what!")
+      return res.status(400).send(error)
+    }
   },
   /**
    * Login
@@ -152,7 +112,7 @@ const User = {
       }
       console.log("333We got to here!")
       console.log("Användarnamn stämmer")
-      if (!helper.comparePassword(rows[0].password, req.body.password)) {
+      if (!helper.comparePassword(rows[0].passwd, req.body.password)) {
         console.log("Compare pasword sket sig..")
         let errObj = {statusText: "Current password does not match"}
         res.status(400).send(errObj)
