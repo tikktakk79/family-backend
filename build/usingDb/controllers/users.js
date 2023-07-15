@@ -38,7 +38,7 @@ var User = {
             }));
           case 3:
             hashPassword = _helper["default"].hashPassword(req.body.password);
-            createQuery = "INSERT INTO\n      user (firstname, lastname, username,  email, passwd)\n      VALUES (?, ?, ?, ?, ?)\n      "; // const token = helper.generateToken(rows[0].anvandarnamn)
+            createQuery = "INSERT INTO\n      user (firstname, lastname, username,  email, passwd)\n      VALUES (?, ?, ?, ?, ?)\n      "; // const token = helper.generateToken(rows[0].username)
             // req.session.token = token
             // return res.status(201).send({ token })
             chosenProtocol = "https";
@@ -189,8 +189,8 @@ var User = {
       return _regeneratorRuntime().wrap(function _callee3$(_context3) {
         while (1) switch (_context3.prev = _context3.next) {
           case 0:
-            selectQuery = "SELECT * FROM anvandare WHERE anvandarnamn=?";
-            deleteQuery = "DELETE FROM anvandare WHERE anvandarnamn=?";
+            selectQuery = "SELECT * FROM user WHERE username=?";
+            deleteQuery = "DELETE FROM user WHERE username=?";
             _context3.prev = 2;
             _context3.next = 5;
             return _db["default"].query(deleteQuery, [req.body.username /* req.user.username */]);
@@ -227,7 +227,7 @@ var User = {
         while (1) switch (_context4.prev = _context4.next) {
           case 0:
             console.log("Running user update on backend");
-            updateQuery = "UPDATE anvandare\n        SET (fornamn, efternamn, email) =\n        (?, ?, ?)\n        WHERE anvandarnamn=?";
+            updateQuery = "UPDATE user\n        SET (fornamn, efternamn, email) =\n        (?, ?, ?)\n        WHERE username=?";
             _context4.prev = 2;
             _context4.next = 5;
             return _db["default"].query(updateQuery, [req.body.firstname, req.body.lastname, req.body.email, req.user.username]);
@@ -331,7 +331,7 @@ var User = {
       return _regeneratorRuntime().wrap(function _callee6$(_context6) {
         while (1) switch (_context6.prev = _context6.next) {
           case 0:
-            createQuery = "SELECT anvandarnamn, fornamn, efternamn, email\n    FROM anvandare\n    WHERE anvandarnamn LIKE ?";
+            createQuery = "SELECT username, fornamn, efternamn, email\n    FROM user\n    WHERE username LIKE ?";
             _context6.prev = 1;
             _context6.next = 4;
             return _db["default"].query(createQuery, [req.user.username]);
@@ -358,7 +358,7 @@ var User = {
         while (1) switch (_context7.prev = _context7.next) {
           case 0:
             console.log("Searching for users");
-            createQuery = "SELECT anvandarnamn, hemligt FROM anvandare\n    WHERE\n      anvandarnamn LIKE\n        LOWER(?)\n   ";
+            createQuery = "SELECT username, hemligt FROM user\n    WHERE\n      username LIKE\n        LOWER(?)\n   ";
             console.log("QUERY", req.query);
             console.log("QUERY FIRSTNAME", req.query.firstname);
             username = req.query.username || "";
@@ -374,7 +374,7 @@ var User = {
             rows = _context7.sent;
             console.log("Rows from searchUsers", rows);
             rowsMod = rows.filter(function (row) {
-              return row.anvandarnamn !== req.user.username;
+              return row.username !== req.user.username;
             });
             return _context7.abrupt("return", res.status(201).send(rowsMod));
           case 19:
@@ -413,7 +413,7 @@ var User = {
               root: path.join(__dirname, '../../../public')
             }));
           case 11:
-            updateUser = "\n      UPDATE anvandare\n      SET \n        aktiveringskod = null,\n        status = 'member'\n      WHERE\n        aktiveringskod = ?\n      AND\n        email = ?\n    ";
+            updateUser = "\n      UPDATE user\n      SET \n        aktiveringskod = null,\n        status = 'member'\n      WHERE\n        aktiveringskod = ?\n      AND\n        email = ?\n    ";
             values = [req.params.secretCode, decoded.email];
             _context8.prev = 13;
             _context8.next = 16;

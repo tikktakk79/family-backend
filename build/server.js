@@ -9,6 +9,7 @@ require("regenerator-runtime/runtime");
 var _users = _interopRequireDefault(require("./usingDB/controllers/users"));
 var _article = _interopRequireDefault(require("./usingDB/controllers/article"));
 var _getdata = _interopRequireDefault(require("./usingDb/controllers/getdata.js"));
+var _Auth = _interopRequireDefault(require("./usingDB/middleware/Auth"));
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 //import "babel-polyfill"
 var cors = require("cors");
@@ -21,7 +22,7 @@ if (process.env.NODE_ENV === "development") {
   allowed = ["http://localhost:8080"];
 } else {
   console.log("NODE_ENV production");
-  allowed = ["", ""];
+  allowed = ["https://www.sjoburger.com", "http://www.sjoburger.com"];
 }
 var corsOptions = {
   origin: allowed
@@ -40,15 +41,14 @@ app.get("/", function (req, res) {
     message: "YAY! Congratulations! Your first endpoint is working"
   });
 });
-app.post("/api/setpass", User.setPassword);
 app.post("/api/login", User.loginUser);
-app.post("/api/createuser", User.createUser);
-app.post("/api/addarticle", _article["default"].addArticle);
-app.post("/api/editarticle", _article["default"].editArticle);
-app.get("/api/getarticles", _article["default"].getArticles);
-app.get("/api/getstorytags", _article["default"].getStoryTags);
-app.get("/api/gettaglinks", _article["default"].getTagLinks);
-app.get("/api/getcategories", _article["default"].getCategories);
+app.post("/api/createuser", _Auth["default"].verifyToken, User.createUser);
+app.post("/api/addarticle", _Auth["default"].verifyToken, _article["default"].addArticle);
+app.post("/api/editarticle", _Auth["default"].verifyToken, _article["default"].editArticle);
+app.get("/api/getarticles", _Auth["default"].verifyToken, _article["default"].getArticles);
+app.get("/api/getstorytags", _Auth["default"].verifyToken, _article["default"].getStoryTags);
+app.get("/api/gettaglinks", _Auth["default"].verifyToken, _article["default"].getTagLinks);
+app.get("/api/getcategories", _Auth["default"].verifyToken, _article["default"].getCategories);
 var PORT = process.env.PORT || 3000;
 app.listen(PORT, function () {
   console.log("Our app is running on port ".concat(PORT));

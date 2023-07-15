@@ -68,14 +68,14 @@ const Helper = {
 
       console.log("RAW", raw)
 
-      if (raw.anvandare1 === myUser) {
-        friend.username = raw.anvandare2
+      if (raw.user1 === myUser) {
+        friend.username = raw.user2
         friend.fornamn = raw.fnamn2
         friend.efternamn = raw.enamn2
         friend.email = raw.email2
         friend.hemligt = raw.hemligt2
       } else {
-        friend.username = raw.anvandare1
+        friend.username = raw.user1
         friend.fornamn = raw.fnamn1
         friend.efternamn = raw.enamn1
         friend.email = raw.email1
@@ -99,9 +99,9 @@ const Helper = {
   async permissionFriend(db, req) {
 
     let createQuery1 = `
-      SELECT hemligt from anvandare 
+      SELECT hemligt from user 
       WHERE
-        anvandarnamn LIKE ?
+        username LIKE ?
     `
 
     let rows = await db.query(createQuery1, [req.body.username])
@@ -116,9 +116,9 @@ const Helper = {
     let createQuery2 = `
     select * from vanner
     where 
-      (anvandare1 LIKE ? AND anvandare2 LIKE ?)
+      (user1 LIKE ? AND user2 LIKE ?)
     OR 
-      (anvandare2 LIKE ? AND anvandare1 LIKE ?)
+      (user2 LIKE ? AND user1 LIKE ?)
     AND  
       (godkann IS NULL OR godkann LIKE ?)
     `

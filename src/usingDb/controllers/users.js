@@ -25,7 +25,7 @@ const User = {
       user (firstname, lastname, username,  email, passwd)
       VALUES (?, ?, ?, ?, ?)
       `
-    // const token = helper.generateToken(rows[0].anvandarnamn)
+    // const token = helper.generateToken(rows[0].username)
     // req.session.token = token
     // return res.status(201).send({ token })
 
@@ -137,9 +137,9 @@ const User = {
    */
   async deleteUser(req, res) {
     const selectQuery =
-      "SELECT * FROM anvandare WHERE anvandarnamn=?"
+      "SELECT * FROM user WHERE username=?"
     const deleteQuery =
-      "DELETE FROM anvandare WHERE anvandarnamn=?"
+      "DELETE FROM user WHERE username=?"
     try {
       let {rows} = await db.query(deleteQuery, [
         req.body.username /* req.user.username */
@@ -162,10 +162,10 @@ const User = {
     console.log("Running user update on backend")
 
     const updateQuery =
-      `UPDATE anvandare
+      `UPDATE user
         SET (fornamn, efternamn, email) =
         (?, ?, ?)
-        WHERE anvandarnamn=?`
+        WHERE username=?`
 
       try {
         await db.query(updateQuery, [
@@ -235,9 +235,9 @@ const User = {
 
   async getUserData(req, res) {
     const createQuery =
-    `SELECT anvandarnamn, fornamn, efternamn, email
-    FROM anvandare
-    WHERE anvandarnamn LIKE ?`
+    `SELECT username, fornamn, efternamn, email
+    FROM user
+    WHERE username LIKE ?`
 
     try {
       const rows = await db.query(createQuery, [req.user.username])
@@ -251,9 +251,9 @@ const User = {
 
   async searchUsers(req, res) {
     console.log("Searching for users")
-    const createQuery = `SELECT anvandarnamn, hemligt FROM anvandare
+    const createQuery = `SELECT username, hemligt FROM user
     WHERE
-      anvandarnamn LIKE
+      username LIKE
         LOWER(?)
    `
 
@@ -272,7 +272,7 @@ const User = {
     try {
       const rows = await db.query(createQuery, values)
       console.log("Rows from searchUsers", rows);
-      let rowsMod = rows.filter((row) => row.anvandarnamn !== req.user.username)
+      let rowsMod = rows.filter((row) => row.username !== req.user.username)
       return res.status(201).send(rowsMod)
     } catch (error) {
       return res.status(400).send(error)
@@ -302,7 +302,7 @@ const User = {
     }
 
     const updateUser = `
-      UPDATE anvandare
+      UPDATE user
       SET 
         aktiveringskod = null,
         status = 'member'

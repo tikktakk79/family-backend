@@ -10,6 +10,7 @@ const cors = require("cors")
 import UserWithDb from "./usingDB/controllers/users"
 import Article from "./usingDB/controllers/article"
 import getData from "./usingDb/controllers/getdata.js"
+import Auth from "./usingDB/middleware/Auth"
 
 const app = express()
 
@@ -24,7 +25,7 @@ if (process.env.NODE_ENV === "development") {
   allowed = ["http://localhost:8080"]
 } else {
   console.log("NODE_ENV production")
-  allowed = ["", ""]
+  allowed = ["https://www.sjoburger.com", "http://www.sjoburger.com"]
 }
 
 let corsOptions = {
@@ -42,9 +43,8 @@ app.get("/", (req, res) => {
     .send({ message: "YAY! Congratulations! Your first endpoint is working" })
 })
 
-app.post("/api/setpass", User.setPassword)
 app.post("/api/login", User.loginUser)
-app.post("/api/createuser", User.createUser)
+app.post("/api/createuser", Auth.verifyToken, User.createUser)
 app.post("/api/addarticle", Auth.verifyToken, Article.addArticle)
 app.post("/api/editarticle", Auth.verifyToken, Article.editArticle)
 app.get("/api/getarticles", Auth.verifyToken, Article.getArticles)
