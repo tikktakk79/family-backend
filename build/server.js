@@ -6,10 +6,10 @@
 var _express = _interopRequireDefault(require("express"));
 require("core-js/stable");
 require("regenerator-runtime/runtime");
-var _users = _interopRequireDefault(require("./usingDB/controllers/users"));
-var _article = _interopRequireDefault(require("./usingDB/controllers/article"));
+var _users = _interopRequireDefault(require("./usingDb/controllers/users"));
+var _article = _interopRequireDefault(require("./usingDb/controllers/article"));
 var _getdata = _interopRequireDefault(require("./usingDb/controllers/getdata.js"));
-var _Auth = _interopRequireDefault(require("./usingDB/middleware/Auth"));
+var _Auth = _interopRequireDefault(require("./usingDb/middleware/Auth"));
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 //import "babel-polyfill"
 var cors = require("cors");
@@ -22,12 +22,11 @@ if (process.env.NODE_ENV === "development") {
   allowed = ["http://localhost:8080"];
 } else {
   console.log("NODE_ENV production");
-  allowed = ["https://www.sjoburger.com", "http://www.sjoburger.com"];
+  allowed = ["https://sjoburger.com", "http://sjoburger.com"];
 }
 var corsOptions = {
   origin: allowed
 };
-app.use(_express["default"].json());
 app.use(cors(corsOptions));
 app.use(_express["default"].json({
   extended: true

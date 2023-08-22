@@ -7,10 +7,10 @@ import "core-js/stable"
 import "regenerator-runtime/runtime"
 const cors = require("cors")
 
-import UserWithDb from "./usingDB/controllers/users"
-import Article from "./usingDB/controllers/article"
+import UserWithDb from "./usingDb/controllers/users"
+import Article from "./usingDb/controllers/article"
 import getData from "./usingDb/controllers/getdata.js"
-import Auth from "./usingDB/middleware/Auth"
+import Auth from "./usingDb/middleware/Auth"
 
 const app = express()
 
@@ -25,14 +25,13 @@ if (process.env.NODE_ENV === "development") {
   allowed = ["http://localhost:8080"]
 } else {
   console.log("NODE_ENV production")
-  allowed = ["https://www.sjoburger.com", "http://www.sjoburger.com"]
+  allowed = ["https://sjoburger.com", "http://sjoburger.com"]
 }
 
 let corsOptions = {
   origin: allowed
 }
 
-app.use(express.json())
 app.use(cors(corsOptions))
 app.use(express.json({extended: true}))
 app.use(express.urlencoded({ extended: true, limit: '4mb' }))

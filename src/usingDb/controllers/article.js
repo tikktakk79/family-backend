@@ -1,3 +1,4 @@
+import moment from "moment"
 import db from "../db"
 import helper from "./helper.js"
 
@@ -5,12 +6,13 @@ import helper from "./helper.js"
 const Article = {
   async addArticle(req, res) {
     console.log("Running addArticle")
+    let mySQLCreated = moment(Date.now()).format('YYYY-MM-DD HH:mm:ss')
     let createQuery = `
-      INSERT INTO article (heading, story, category, year_event)
-      VALUES (?,?,?,?);
+      INSERT INTO article (heading, story, category, year_event, created, created_by)
+      VALUES (?,?,?,?,?,?);
     `
-  
-    const values = [req.body.heading, req.body.story, req.body.category, req.body.year]
+    console.log("created", mySQLCreated)
+    const values = [req.body.heading, req.body.story, req.body.category, req.body.year, mySQLCreated, req.user.username]
 
     try {
       await db.query(createQuery, values)
@@ -21,6 +23,7 @@ const Article = {
     }
   },
   async editArticle(req, res) {
+    let mySQLUpdated = moment(Date.now()).format('YYYY-MM-DD HH:mm:ss')
     console.log("Running editArticle")
     console.log("req.body", req.body)
     let tags = req.body.tags
@@ -37,12 +40,14 @@ const Article = {
         heading = ?,
         story = ?,
         category = ?,
-        year_event = ?
+        year_event = ?,
+        updated = ?,
+        updated_by = ?
       WHERE
         id = ?;
      `
   
-    const values = [req.body.heading, req.body.story, req.body.category, req.body.year, req.body.id]
+    const values = [req.body.heading, req.body.story, req.body.category, req.body.year, mySQLUpdated, req.user.username, req.body.id]
 
     try {
       await db.query(createQuery, values)

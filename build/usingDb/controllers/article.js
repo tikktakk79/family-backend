@@ -5,6 +5,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports["default"] = void 0;
+var _moment = _interopRequireDefault(require("moment"));
 var _db = _interopRequireDefault(require("../db"));
 var _helper = _interopRequireDefault(require("./helper.js"));
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
@@ -14,36 +15,39 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 var Article = {
   addArticle: function addArticle(req, res) {
     return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
-      var createQuery, values;
+      var mySQLCreated, createQuery, values;
       return _regeneratorRuntime().wrap(function _callee$(_context) {
         while (1) switch (_context.prev = _context.next) {
           case 0:
             console.log("Running addArticle");
-            createQuery = "\n      INSERT INTO article (heading, story, category, year_event)\n      VALUES (?,?,?,?);\n    ";
-            values = [req.body.heading, req.body.story, req.body.category, req.body.year];
-            _context.prev = 3;
-            _context.next = 6;
+            mySQLCreated = (0, _moment["default"])(Date.now()).format('YYYY-MM-DD HH:mm:ss');
+            createQuery = "\n      INSERT INTO article (heading, story, category, year_event, created, created_by)\n      VALUES (?,?,?,?,?,?);\n    ";
+            console.log("created", mySQLCreated);
+            values = [req.body.heading, req.body.story, req.body.category, req.body.year, mySQLCreated, req.user.username];
+            _context.prev = 5;
+            _context.next = 8;
             return _db["default"].query(createQuery, values);
-          case 6:
+          case 8:
             return _context.abrupt("return", res.status(201).end());
-          case 9:
-            _context.prev = 9;
-            _context.t0 = _context["catch"](3);
+          case 11:
+            _context.prev = 11;
+            _context.t0 = _context["catch"](5);
             console.log("Error in addArticle", _context.t0);
             return _context.abrupt("return", res.status(400).send(_context.t0));
-          case 13:
+          case 15:
           case "end":
             return _context.stop();
         }
-      }, _callee, null, [[3, 9]]);
+      }, _callee, null, [[5, 11]]);
     }))();
   },
   editArticle: function editArticle(req, res) {
     return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2() {
-      var tags, createQuery, values;
+      var mySQLUpdated, tags, createQuery, values;
       return _regeneratorRuntime().wrap(function _callee2$(_context2) {
         while (1) switch (_context2.prev = _context2.next) {
           case 0:
+            mySQLUpdated = (0, _moment["default"])(Date.now()).format('YYYY-MM-DD HH:mm:ss');
             console.log("Running editArticle");
             console.log("req.body", req.body);
             tags = req.body.tags;
@@ -52,23 +56,23 @@ var Article = {
               console.log("Needs to update tags", tags);
               Article.editTags(req.body.id, tags);
             }
-            createQuery = "\n      UPDATE article \n      SET \n        heading = ?,\n        story = ?,\n        category = ?,\n        year_event = ?\n      WHERE\n        id = ?;\n     ";
-            values = [req.body.heading, req.body.story, req.body.category, req.body.year, req.body.id];
-            _context2.prev = 7;
-            _context2.next = 10;
+            createQuery = "\n      UPDATE article \n      SET \n        heading = ?,\n        story = ?,\n        category = ?,\n        year_event = ?,\n        updated = ?,\n        updated_by = ?\n      WHERE\n        id = ?;\n     ";
+            values = [req.body.heading, req.body.story, req.body.category, req.body.year, mySQLUpdated, req.user.username, req.body.id];
+            _context2.prev = 8;
+            _context2.next = 11;
             return _db["default"].query(createQuery, values);
-          case 10:
+          case 11:
             return _context2.abrupt("return", res.status(201).end());
-          case 13:
-            _context2.prev = 13;
-            _context2.t0 = _context2["catch"](7);
+          case 14:
+            _context2.prev = 14;
+            _context2.t0 = _context2["catch"](8);
             console.log("Error in addArticle", _context2.t0);
             return _context2.abrupt("return", res.status(400).send(_context2.t0));
-          case 17:
+          case 18:
           case "end":
             return _context2.stop();
         }
-      }, _callee2, null, [[7, 13]]);
+      }, _callee2, null, [[8, 14]]);
     }))();
   },
   getArticles: function getArticles(req, res) {
