@@ -50,6 +50,7 @@ app.get("/api/getarticles", Auth.verifyToken, Article.getArticles)
 app.get("/api/getstorytags", Auth.verifyToken, Article.getStoryTags)
 app.get("/api/gettaglinks", Auth.verifyToken, Article.getTagLinks)
 app.get("/api/getcategories", Auth.verifyToken, Article.getCategories)
+app.get("/api/getuserlevel", Auth.verifyToken, User.getUserLevel)
 
 const PORT = process.env.PORT || 3000
 app.listen(PORT, () => {

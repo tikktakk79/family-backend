@@ -1,0 +1,354 @@
+App 2464383 output: /home/sjoburger/domains/data.sjoburger.com/build/server.js:4
+App 2464383 output: import express from "express";
+App 2464383 output: ^^^^^^
+App 2464383 output: 
+App 2464383 output: SyntaxError: Cannot use import statement outside a module
+App 2464383 output:     at wrapSafe (internal/modules/cjs/loader.js:915:16)
+App 2464383 output:     at Module._compile (internal/modules/cjs/loader.js:963:27)
+App 2464383 output:     at Object.Module._extensions..js (internal/modules/cjs/loader.js:1027:10)
+App 2464383 output:     at Module.load (internal/modules/cjs/loader.js:863:32)
+App 2464383 output:     at Function.Module._load (internal/modules/cjs/loader.js:708:14)
+App 2464383 output:     at Module.require (internal/modules/cjs/loader.js:887:19)
+App 2464383 output:     at Module.require (/opt/passenger/src/helper-scripts/node-loader.js:80:25)
+App 2464383 output:     at require (internal/modules/cjs/helpers.js:74:18)
+App 2464383 output:     at loadApplication (/opt/passenger/src/helper-scripts/node-loader.js:243:2)
+App 2464383 output:     at setupEnvironment (/opt/passenger/src/helper-scripts/node-loader.js:214:2)
+App 2468385 output: /home/sjoburger/domains/data.sjoburger.com/build/server.js:4
+App 2468385 output: import express from "express";
+App 2468385 output: ^^^^^^
+App 2468385 output: 
+App 2468385 output: SyntaxError: Cannot use import statement outside a module
+App 2468385 output:     at wrapSafe (internal/modules/cjs/loader.js:915:16)
+App 2468385 output:     at Module._compile (internal/modules/cjs/loader.js:963:27)
+App 2468385 output:     at Object.Module._extensions..js (internal/modules/cjs/loader.js:1027:10)
+App 2468385 output:     at Module.load (internal/modules/cjs/loader.js:863:32)
+App 2468385 output:     at Function.Module._load (internal/modules/cjs/loader.js:708:14)
+App 2468385 output:     at Module.require (internal/modules/cjs/loader.js:887:19)
+App 2468385 output:     at Module.require (/opt/passenger/src/helper-scripts/node-loader.js:80:25)
+App 2468385 output:     at require (internal/modules/cjs/helpers.js:74:18)
+App 2468385 output:     at loadApplication (/opt/passenger/src/helper-scripts/node-loader.js:243:2)
+App 2468385 output:     at setupEnvironment (/opt/passenger/src/helper-scripts/node-loader.js:214:2)
+App 2468838 output: /home/sjoburger/domains/data.sjoburger.com/build/server.js:4
+App 2468838 output: import express from "express";
+App 2468838 output: ^^^^^^
+App 2468838 output: 
+App 2468838 output: SyntaxError: Cannot use import statement outside a module
+App 2468838 output:     at wrapSafe (internal/modules/cjs/loader.js:915:16)
+App 2468838 output:     at Module._compile (internal/modules/cjs/loader.js:963:27)
+App 2468838 output:     at Object.Module._extensions..js (internal/modules/cjs/loader.js:1027:10)
+App 2468838 output:     at Module.load (internal/modules/cjs/loader.js:863:32)
+App 2468838 output:     at Function.Module._load (internal/modules/cjs/loader.js:708:14)
+App 2468838 output:     at Module.require (internal/modules/cjs/loader.js:887:19)
+App 2468838 output:     at Module.require (/opt/passenger/src/helper-scripts/node-loader.js:80:25)
+App 2468838 output:     at require (internal/modules/cjs/helpers.js:74:18)
+App 2468838 output:     at loadApplication (/opt/passenger/src/helper-scripts/node-loader.js:243:2)
+App 2468838 output:     at setupEnvironment (/opt/passenger/src/helper-scripts/node-loader.js:214:2)
+App 2472627 output: /home/sjoburger/domains/data.sjoburger.com/build/server.js:4
+App 2472627 output: import express from "express";
+App 2472627 output: ^^^^^^
+App 2472627 output: 
+App 2472627 output: SyntaxError: Cannot use import statement outside a module
+App 2472627 output:     at wrapSafe (internal/modules/cjs/loader.js:915:16)
+App 2472627 output:     at Module._compile (internal/modules/cjs/loader.js:963:27)
+App 2472627 output:     at Object.Module._extensions..js (internal/modules/cjs/loader.js:1027:10)
+App 2472627 output:     at Module.load (internal/modules/cjs/loader.js:863:32)
+App 2472627 output:     at Function.Module._load (internal/modules/cjs/loader.js:708:14)
+App 2472627 output:     at Module.require (internal/modules/cjs/loader.js:887:19)
+App 2472627 output:     at Module.require (/opt/passenger/src/helper-scripts/node-loader.js:80:25)
+App 2472627 output:     at require (internal/modules/cjs/helpers.js:74:18)
+App 2472627 output:     at loadApplication (/opt/passenger/src/helper-scripts/node-loader.js:243:2)
+App 2472627 output:     at setupEnvironment (/opt/passenger/src/helper-scripts/node-loader.js:214:2)
+App 2475900 output: /home/sjoburger/domains/data.sjoburger.com/build/server.js:4
+App 2475900 output: import express from "express";
+App 2475900 output: ^^^^^^
+App 2475900 output: 
+App 2475900 output: SyntaxError: Cannot use import statement outside a module
+App 2475900 output:     at wrapSafe (internal/modules/cjs/loader.js:915:16)
+App 2475900 output:     at Module._compile (internal/modules/cjs/loader.js:963:27)
+App 2475900 output:     at Object.Module._extensions..js (internal/modules/cjs/loader.js:1027:10)
+App 2475900 output:     at Module.load (internal/modules/cjs/loader.js:863:32)
+App 2475900 output:     at Function.Module._load (internal/modules/cjs/loader.js:708:14)
+App 2475900 output:     at Module.require (internal/modules/cjs/loader.js:887:19)
+App 2475900 output:     at Module.require (/opt/passenger/src/helper-scripts/node-loader.js:80:25)
+App 2475900 output:     at require (internal/modules/cjs/helpers.js:74:18)
+App 2475900 output:     at loadApplication (/opt/passenger/src/helper-scripts/node-loader.js:243:2)
+App 2475900 output:     at setupEnvironment (/opt/passenger/src/helper-scripts/node-loader.js:214:2)
+App 2477008 output: /home/sjoburger/domains/data.sjoburger.com/build/server.js:4
+App 2477008 output: import express from "express";
+App 2477008 output: ^^^^^^
+App 2477008 output: 
+App 2477008 output: SyntaxError: Cannot use import statement outside a module
+App 2477008 output:     at wrapSafe (internal/modules/cjs/loader.js:915:16)
+App 2477008 output:     at Module._compile (internal/modules/cjs/loader.js:963:27)
+App 2477008 output:     at Object.Module._extensions..js (internal/modules/cjs/loader.js:1027:10)
+App 2477008 output:     at Module.load (internal/modules/cjs/loader.js:863:32)
+App 2477008 output:     at Function.Module._load (internal/modules/cjs/loader.js:708:14)
+App 2477008 output:     at Module.require (internal/modules/cjs/loader.js:887:19)
+App 2477008 output:     at Module.require (/opt/passenger/src/helper-scripts/node-loader.js:80:25)
+App 2477008 output:     at require (internal/modules/cjs/helpers.js:74:18)
+App 2477008 output:     at loadApplication (/opt/passenger/src/helper-scripts/node-loader.js:243:2)
+App 2477008 output:     at setupEnvironment (/opt/passenger/src/helper-scripts/node-loader.js:214:2)
+App 2497838 output: /home/sjoburger/domains/data.sjoburger.com/build/server.js:4
+App 2497838 output: import express from "express";
+App 2497838 output: ^^^^^^
+App 2497838 output: 
+App 2497838 output: SyntaxError: Cannot use import statement outside a module
+App 2497838 output:     at wrapSafe (internal/modules/cjs/loader.js:915:16)
+App 2497838 output:     at Module._compile (internal/modules/cjs/loader.js:963:27)
+App 2497838 output:     at Object.Module._extensions..js (internal/modules/cjs/loader.js:1027:10)
+App 2497838 output:     at Module.load (internal/modules/cjs/loader.js:863:32)
+App 2497838 output:     at Function.Module._load (internal/modules/cjs/loader.js:708:14)
+App 2497838 output:     at Module.require (internal/modules/cjs/loader.js:887:19)
+App 2497838 output:     at Module.require (/opt/passenger/src/helper-scripts/node-loader.js:80:25)
+App 2497838 output:     at require (internal/modules/cjs/helpers.js:74:18)
+App 2497838 output:     at loadApplication (/opt/passenger/src/helper-scripts/node-loader.js:243:2)
+App 2497838 output:     at setupEnvironment (/opt/passenger/src/helper-scripts/node-loader.js:214:2)
+App 2513585 output: /home/sjoburger/nodevenv/domains/data.sjoburger.com/12/lib/node_modules/mysql2/node_modules/lru-cache/dist/cjs/index.js:359
+App 2513585 output:     #initializeTTLTracking() {
+App 2513585 output:                           ^
+App 2513585 output: 
+App 2513585 output: SyntaxError: Unexpected token '('
+App 2513585 output:     at wrapSafe (internal/modules/cjs/loader.js:915:16)
+App 2513585 output:     at Module._compile (internal/modules/cjs/loader.js:963:27)
+App 2513585 output:     at Object.Module._extensions..js (internal/modules/cjs/loader.js:1027:10)
+App 2513585 output:     at Module.load (internal/modules/cjs/loader.js:863:32)
+App 2513585 output:     at Function.Module._load (internal/modules/cjs/loader.js:708:14)
+App 2513585 output:     at Module.require (internal/modules/cjs/loader.js:887:19)
+App 2513585 output:     at Module.require (/opt/passenger/src/helper-scripts/node-loader.js:80:25)
+App 2513585 output:     at require (internal/modules/cjs/helpers.js:74:18)
+App 2513585 output:     at Object.<anonymous> (/home/sjoburger/nodevenv/domains/data.sjoburger.com/12/lib/node_modules/mysql2/node_modules/lru-cache/dist/cjs/index-cjs.js:5:36)
+App 2513585 output:     at Module._compile (internal/modules/cjs/loader.js:999:30)
+App 2547864 output: /home/sjoburger/nodevenv/domains/data.sjoburger.com/12/lib/node_modules/mysql2/node_modules/lru-cache/dist/cjs/index.js:359
+App 2547864 output:     #initializeTTLTracking() {
+App 2547864 output:                           ^
+App 2547864 output: 
+App 2547864 output: SyntaxError: Unexpected token '('
+App 2547864 output:     at wrapSafe (internal/modules/cjs/loader.js:915:16)
+App 2547864 output:     at Module._compile (internal/modules/cjs/loader.js:963:27)
+App 2547864 output:     at Object.Module._extensions..js (internal/modules/cjs/loader.js:1027:10)
+App 2547864 output:     at Module.load (internal/modules/cjs/loader.js:863:32)
+App 2547864 output:     at Function.Module._load (internal/modules/cjs/loader.js:708:14)
+App 2547864 output:     at Module.require (internal/modules/cjs/loader.js:887:19)
+App 2547864 output:     at Module.require (/opt/passenger/src/helper-scripts/node-loader.js:80:25)
+App 2547864 output:     at require (internal/modules/cjs/helpers.js:74:18)
+App 2547864 output:     at Object.<anonymous> (/home/sjoburger/nodevenv/domains/data.sjoburger.com/12/lib/node_modules/mysql2/node_modules/lru-cache/dist/cjs/index-cjs.js:5:36)
+App 2547864 output:     at Module._compile (internal/modules/cjs/loader.js:999:30)
+App 2587070 output: Value of NODE_ENV development
+App 2587070 output: NODE_ENV development
+App 2587070 output: Our app is running on port 3000
+App 742074 output: Value of NODE_ENV production
+App 742074 output: NODE_ENV production
+App 742074 output: Our app is running on port 3000
+App 1299711 output: Value of NODE_ENV production
+App 1299711 output: NODE_ENV production
+App 1299711 output: Our app is running on port 3000
+App 1503327 output: Value of NODE_ENV production
+App 1503327 output: NODE_ENV production
+App 1503327 output: Our app is running on port 3000
+App 3155667 output: Value of NODE_ENV production
+App 3155667 output: NODE_ENV production
+App 3155667 output: Our app is running on port 3000
+App 3419305 output: internal/modules/cjs/loader.js:818
+App 3419305 output:   throw err;
+App 3419305 output:   ^
+App 3419305 output: 
+App 3419305 output: Error: Cannot find module 'express'
+App 3419305 output: Require stack:
+App 3419305 output: - /home/sjoburger/domains/data.sjoburger.com/build/server.js
+App 3419305 output: - /opt/passenger/src/helper-scripts/node-loader.js
+App 3419305 output:     at Function.Module._resolveFilename (internal/modules/cjs/loader.js:815:15)
+App 3419305 output:     at Function.Module._load (internal/modules/cjs/loader.js:667:27)
+App 3419305 output:     at Module.require (internal/modules/cjs/loader.js:887:19)
+App 3419305 output:     at Module.require (/opt/passenger/src/helper-scripts/node-loader.js:80:25)
+App 3419305 output:     at require (internal/modules/cjs/helpers.js:74:18)
+App 3419305 output:     at Object.<anonymous> (/home/sjoburger/domains/data.sjoburger.com/build/server.js:6:39)
+App 3419305 output:     at Module._compile (internal/modules/cjs/loader.js:999:30)
+App 3419305 output:     at Object.Module._extensions..js (internal/modules/cjs/loader.js:1027:10)
+App 3419305 output:     at Module.load (internal/modules/cjs/loader.js:863:32)
+App 3419305 output:     at Function.Module._load (internal/modules/cjs/loader.js:708:14) {
+App 3419305 output:   code: 'MODULE_NOT_FOUND',
+App 3419305 output:   requireStack: [
+App 3419305 output:     '/home/sjoburger/domains/data.sjoburger.com/build/server.js',
+App 3419305 output:     '/opt/passenger/src/helper-scripts/node-loader.js'
+App 3419305 output:   ]
+App 3419305 output: }
+App 3419768 output: internal/modules/cjs/loader.js:818
+App 3419768 output:   throw err;
+App 3419768 output:   ^
+App 3419768 output: 
+App 3419768 output: Error: Cannot find module 'express'
+App 3419768 output: Require stack:
+App 3419768 output: - /home/sjoburger/domains/data.sjoburger.com/build/server.js
+App 3419768 output: - /opt/passenger/src/helper-scripts/node-loader.js
+App 3419768 output:     at Function.Module._resolveFilename (internal/modules/cjs/loader.js:815:15)
+App 3419768 output:     at Function.Module._load (internal/modules/cjs/loader.js:667:27)
+App 3419768 output:     at Module.require (internal/modules/cjs/loader.js:887:19)
+App 3419768 output:     at Module.require (/opt/passenger/src/helper-scripts/node-loader.js:80:25)
+App 3419768 output:     at require (internal/modules/cjs/helpers.js:74:18)
+App 3419768 output:     at Object.<anonymous> (/home/sjoburger/domains/data.sjoburger.com/build/server.js:6:39)
+App 3419768 output:     at Module._compile (internal/modules/cjs/loader.js:999:30)
+App 3419768 output:     at Object.Module._extensions..js (internal/modules/cjs/loader.js:1027:10)
+App 3419768 output:     at Module.load (internal/modules/cjs/loader.js:863:32)
+App 3419768 output:     at Function.Module._load (internal/modules/cjs/loader.js:708:14) {
+App 3419768 output:   code: 'MODULE_NOT_FOUND',
+App 3419768 output:   requireStack: [
+App 3419768 output:     '/home/sjoburger/domains/data.sjoburger.com/build/server.js',
+App 3419768 output:     '/opt/passenger/src/helper-scripts/node-loader.js'
+App 3419768 output:   ]
+App 3419768 output: }
+App 3421216 output: Value of NODE_ENV development
+App 3421216 output: NODE_ENV development
+App 3421216 output: Our app is running on port 3000
+App 3421627 output: Value of NODE_ENV development
+App 3421627 output: NODE_ENV development
+App 3421627 output: Our app is running on port 3000
+App 3425400 output: Value of NODE_ENV development
+App 3425400 output: NODE_ENV development
+App 3425400 output: Our app is running on port 3000
+App 3437846 output: Value of NODE_ENV production
+App 3437846 output: NODE_ENV production
+App 3437846 output: Our app is running on port 3000
+App 3437846 output: HEj fron loginUser, proc env production
+App 3437846 output: 1We got to here!
+App 3437846 output: 2We got to here!
+App 3437846 output: AND HERE
+App 3437846 output: UNAME tikktakk
+App 3437846 output: PASSWORD bajsbajs
+App 3437846 output: Query text SELECT * FROM user WHERE username = ?
+App 3437846 output: query connec error! Error: Access denied for user 'tikktakk'@'localhost' (using password: YES)
+App 3437846 output:     at Packet.asError (/home/sjoburger/nodevenv/domains/data.sjoburger.com/12/lib/node_modules/mysql2/lib/packets/packet.js:728:17)
+App 3437846 output:     at ClientHandshake.execute (/home/sjoburger/nodevenv/domains/data.sjoburger.com/12/lib/node_modules/mysql2/lib/commands/command.js:29:26)
+App 3437846 output:     at PoolConnection.handlePacket (/home/sjoburger/nodevenv/domains/data.sjoburger.com/12/lib/node_modules/mysql2/lib/connection.js:456:32)
+App 3437846 output:     at PacketParser.onPacket (/home/sjoburger/nodevenv/domains/data.sjoburger.com/12/lib/node_modules/mysql2/lib/connection.js:85:12)
+App 3437846 output:     at PacketParser.executeStart (/home/sjoburger/nodevenv/domains/data.sjoburger.com/12/lib/node_modules/mysql2/lib/packet_parser.js:75:16)
+App 3437846 output:     at Socket.<anonymous> (/home/sjoburger/nodevenv/domains/data.sjoburger.com/12/lib/node_modules/mysql2/lib/connection.js:92:25)
+App 3437846 output:     at Socket.emit (events.js:314:20)
+App 3437846 output:     at addChunk (_stream_readable.js:297:12)
+App 3437846 output:     at readableAddChunk (_stream_readable.js:272:9)
+App 3437846 output:     at Socket.Readable.push (_stream_readable.js:213:10) {
+App 3437846 output:   code: 'ER_ACCESS_DENIED_ERROR',
+App 3437846 output:   errno: 1045,
+App 3437846 output:   sqlState: '28000',
+App 3437846 output:   sqlMessage: "Access denied for user 'tikktakk'@'localhost' (using password: YES)",
+App 3437846 output:   sql: undefined
+App 3437846 output: }
+App 3483405 output: Value of NODE_ENV production
+App 3483405 output: NODE_ENV production
+App 3483405 output: Our app is running on port 3000
+App 3484252 output: Value of NODE_ENV production
+App 3484252 output: NODE_ENV production
+App 3484252 output: Our app is running on port 3000
+App 3484252 output: HEj fron loginUser, proc env production
+App 3484252 output: 1We got to here!
+App 3484252 output: 2We got to here!
+App 3484252 output: AND HERE
+App 3484252 output: UNAME tikktakk
+App 3484252 output: PASSWORD bajsbajs
+App 3484252 output: Query text SELECT * FROM user WHERE username = ?
+App 3484252 output: query connec error! Error: Access denied for user 'sjoburger_tikktakk'@'localhost' (using password: YES)
+App 3484252 output:     at Packet.asError (/home/sjoburger/nodevenv/domains/data.sjoburger.com/12/lib/node_modules/mysql2/lib/packets/packet.js:728:17)
+App 3484252 output:     at ClientHandshake.execute (/home/sjoburger/nodevenv/domains/data.sjoburger.com/12/lib/node_modules/mysql2/lib/commands/command.js:29:26)
+App 3484252 output:     at PoolConnection.handlePacket (/home/sjoburger/nodevenv/domains/data.sjoburger.com/12/lib/node_modules/mysql2/lib/connection.js:456:32)
+App 3484252 output:     at PacketParser.onPacket (/home/sjoburger/nodevenv/domains/data.sjoburger.com/12/lib/node_modules/mysql2/lib/connection.js:85:12)
+App 3484252 output:     at PacketParser.executeStart (/home/sjoburger/nodevenv/domains/data.sjoburger.com/12/lib/node_modules/mysql2/lib/packet_parser.js:75:16)
+App 3484252 output:     at Socket.<anonymous> (/home/sjoburger/nodevenv/domains/data.sjoburger.com/12/lib/node_modules/mysql2/lib/connection.js:92:25)
+App 3484252 output:     at Socket.emit (events.js:314:20)
+App 3484252 output:     at addChunk (_stream_readable.js:297:12)
+App 3484252 output:     at readableAddChunk (_stream_readable.js:272:9)
+App 3484252 output:     at Socket.Readable.push (_stream_readable.js:213:10) {
+App 3484252 output:   code: 'ER_ACCESS_DENIED_ERROR',
+App 3484252 output:   errno: 1045,
+App 3484252 output:   sqlState: '28000',
+App 3484252 output:   sqlMessage: "Access denied for user 'sjoburger_tikktakk'@'localhost' (using password: YES)",
+App 3484252 output:   sql: undefined
+App 3484252 output: }
+App 3484252 output: HEj fron loginUser, proc env production
+App 3484252 output: 1We got to here!
+App 3484252 output: 2We got to here!
+App 3484252 output: AND HERE
+App 3484252 output: UNAME tikktakk
+App 3484252 output: PASSWORD bajsbajs
+App 3484252 output: Query text SELECT * FROM user WHERE username = ?
+App 3484252 output: connected to the db
+App 3484252 output: Query resolved
+App 3484252 output: Code after resolve
+App 3484252 output: Queryn funkade här kommer rows [
+App 3484252 output:   {
+App 3484252 output:     id: 5,
+App 3484252 output:     firstname: 'Mårten',
+App 3484252 output:     lastname: 'Sjöberg',
+App 3484252 output:     username: 'tikktakk',
+App 3484252 output:     email: 'marten.sjoberg@gmail.com',
+App 3484252 output:     passwd: '$2b$08$TZi2eUMLJx5UBfv18H.ooOOQXZhgIRfDGoQuZWJZTR5ybTJeOBqtW',
+App 3484252 output:     accessgroup: 'external',
+App 3484252 output:     isactive: 0
+App 3484252 output:   }
+App 3484252 output: ]
+App 3484252 output: 333We got to here!
+App 3484252 output: Användarnamn stämmer
+App 3484252 output: KOM enda hit
+App 3484252 output: Hello from generateToken! username is,  tikktakk
+App 3484252 output: Hello AGAIN from generatToken!
+App 3484252 output: Token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRpa2t0YWtrIiwiaWF0IjoxNjkxNDc5NDEzLCJleHAiOjE2OTIwODQyMTN9.8LhkYIqkPSNCoKwykprftYzfnhVURnopKAgYzluIYi0
+App 3484252 output: verifying token
+App 3484252 output: verifying token
+App 3484252 output: verifying token
+App 3484252 output: verifying token
+App 3484252 output: Query resolved
+App 3484252 output: Code after resolve
+App 3484252 output: Token verification query worked
+App 3484252 output: Query resolved
+App 3484252 output: Code after resolve
+App 3484252 output: connected to the db
+App 3484252 output: connected to the db
+App 3484252 output: connected to the db
+App 3484252 output: Query resolved
+App 3484252 output: Code after resolve
+App 3484252 output: Token verification query worked
+App 3484252 output: Query resolved
+App 3484252 output: Code after resolve
+App 3484252 output: Token verification query worked
+App 3484252 output: Query resolved
+App 3484252 output: Code after resolve
+App 3484252 output: Token verification query worked
+App 3484252 output: Query resolved
+App 3484252 output: Code after resolve
+App 3484252 output: Query resolved
+App 3484252 output: Code after resolve
+App 3484252 output: Query resolved
+App 3484252 output: Code after resolve
+App 3484252 output: PayloadTooLargeError: request entity too large
+App 3484252 output:     at readStream (/home/sjoburger/nodevenv/domains/data.sjoburger.com/12/lib/node_modules/raw-body/index.js:156:17)
+App 3484252 output:     at getRawBody (/home/sjoburger/nodevenv/domains/data.sjoburger.com/12/lib/node_modules/raw-body/index.js:109:12)
+App 3484252 output:     at read (/home/sjoburger/nodevenv/domains/data.sjoburger.com/12/lib/node_modules/body-parser/lib/read.js:79:3)
+App 3484252 output:     at jsonParser (/home/sjoburger/nodevenv/domains/data.sjoburger.com/12/lib/node_modules/body-parser/lib/types/json.js:135:5)
+App 3484252 output:     at Layer.handle [as handle_request] (/home/sjoburger/nodevenv/domains/data.sjoburger.com/12/lib/node_modules/express/lib/router/layer.js:95:5)
+App 3484252 output:     at trim_prefix (/home/sjoburger/nodevenv/domains/data.sjoburger.com/12/lib/node_modules/express/lib/router/index.js:328:13)
+App 3484252 output:     at /home/sjoburger/nodevenv/domains/data.sjoburger.com/12/lib/node_modules/express/lib/router/index.js:286:9
+App 3484252 output:     at Function.process_params (/home/sjoburger/nodevenv/domains/data.sjoburger.com/12/lib/node_modules/express/lib/router/index.js:346:12)
+App 3484252 output:     at next (/home/sjoburger/nodevenv/domains/data.sjoburger.com/12/lib/node_modules/express/lib/router/index.js:280:10)
+App 3484252 output:     at expressInit (/home/sjoburger/nodevenv/domains/data.sjoburger.com/12/lib/node_modules/express/lib/middleware/init.js:40:5)
+App 3484252 output: verifying token
+App 3484252 output: Query resolved
+App 3484252 output: Code after resolve
+App 3484252 output: Token verification query worked
+App 3484252 output: verifying token
+App 3484252 output: verifying token
+App 3484252 output: verifying token
+App 3484252 output: Query resolved
+App 3484252 output: Code after resolve
+App 3484252 output: Query resolved
+App 3484252 output: Code after resolve
+App 3484252 output: Token verification query worked
+App 3484252 output: Query resolved
+App 3484252 output: Code after resolve
+App 3484252 output: Token verification query worked
+App 3484252 output: Query resolved
+App 3484252 output: Code after resolve
+App 3484252 output: Query resolved
+App 3484252 output: Code after resolve
+App 3484252 output: Token verification query worked
+App 3484252 output: Query resolved
+App 3484252 output: Code after resolve
+App 3484252 output: Query resolved
+App 3484252 output: Code after resolve

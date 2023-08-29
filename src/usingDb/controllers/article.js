@@ -66,7 +66,6 @@ const Article = {
       const rows  = await db.query(createQuery)
 
       // console.log("Rows from getArticle", rows)
-
       // console.log("rows", rows)
       return res.status(200).send(rows)
     } catch (error) {

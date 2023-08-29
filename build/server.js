@@ -48,6 +48,7 @@ app.get("/api/getarticles", _Auth["default"].verifyToken, _article["default"].ge
 app.get("/api/getstorytags", _Auth["default"].verifyToken, _article["default"].getStoryTags);
 app.get("/api/gettaglinks", _Auth["default"].verifyToken, _article["default"].getTagLinks);
 app.get("/api/getcategories", _Auth["default"].verifyToken, _article["default"].getCategories);
+app.get("/api/getuserlevel", _Auth["default"].verifyToken, User.getUserLevel);
 var PORT = process.env.PORT || 3000;
 app.listen(PORT, function () {
   console.log("Our app is running on port ".concat(PORT));

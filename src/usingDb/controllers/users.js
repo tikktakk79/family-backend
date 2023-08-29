@@ -158,12 +158,25 @@ const User = {
     }
   },
 
+  getUserLevel(req, res) {
+    console.log("Running getUserLevel on backend")
+
+    const getUser = `
+      SELECT accessgroup
+      from user
+      where 
+    
+    `
+
+    
+  },
+
   async updateUser(req, res) {
     console.log("Running user update on backend")
 
     const updateQuery =
       `UPDATE user
-        SET (fornamn, efternamn, email) =
+        SET (firstname, latname, email) =
         (?, ?, ?)
         WHERE username=?`
 
@@ -233,15 +246,15 @@ const User = {
     }
   },
 
-  async getUserData(req, res) {
+  async getUserLevel(req, res) {
     const createQuery =
-    `SELECT username, fornamn, efternamn, email
+    `SELECT accessgroup
     FROM user
     WHERE username LIKE ?`
 
     try {
+      console.log("req.user.id", req.user.id)
       const rows = await db.query(createQuery, [req.user.username])
-      console.log("Username to use", req.user.username)
       console.log("USER data to send: ", rows)
       return res.status(201).send(rows)
     } catch (error) {

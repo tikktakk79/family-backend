@@ -47,7 +47,7 @@ var Helper = {
     var token = _jsonwebtoken["default"].sign({
       username: username
     }, process.env.SECRET, {
-      expiresIn: "30s"
+      expiresIn: "7d"
     });
     console.log("Hello AGAIN from generatToken!");
     return token;
