@@ -19,7 +19,7 @@ const Auth = {
       const decoded = await jwt.verify(token, process.env.SECRET)
       const text = "SELECT * FROM user WHERE username = ?"
       const rows = await db.query(text, [decoded.username])
-      console.log("Token verification query worked")
+      // console.log("Token verification query worked")
       if (!rows[0]) {
         console.log("INVALID TOKEN PROVIDED!!!")
         return res

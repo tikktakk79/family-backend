@@ -44,11 +44,12 @@ var _default = {
               console.log("Query failed", err);
               reject(err);
             } else {
-              console.log("Query resolved");
+              // console.log("Query resolved")
               // console.log(rows)
               resolve(rows);
-              console.log("Code after resolve");
+              //console.log("Code after resolve")
             }
+
             conn.release();
           });
         }

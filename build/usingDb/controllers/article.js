@@ -15,30 +15,43 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 var Article = {
   addArticle: function addArticle(req, res) {
     return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
-      var mySQLCreated, createQuery, values;
+      var tags, mySQLCreated, createQuery, idQuery, values, result, insertId;
       return _regeneratorRuntime().wrap(function _callee$(_context) {
         while (1) switch (_context.prev = _context.next) {
           case 0:
             console.log("Running addArticle");
+            tags = req.body.tags;
             mySQLCreated = (0, _moment["default"])(Date.now()).format('YYYY-MM-DD HH:mm:ss');
             createQuery = "\n      INSERT INTO article (heading, story, category, year_event, created, created_by)\n      VALUES (?,?,?,?,?,?);\n    ";
+            idQuery = "SELECT LAST_INSERT_ID();";
             console.log("created", mySQLCreated);
             values = [req.body.heading, req.body.story, req.body.category, req.body.year, mySQLCreated, req.user.username];
-            _context.prev = 5;
-            _context.next = 8;
+            _context.prev = 7;
+            _context.next = 10;
             return _db["default"].query(createQuery, values);
-          case 8:
+          case 10:
+            result = _context.sent;
+            _context.next = 13;
+            return _db["default"].query(idQuery);
+          case 13:
+            insertId = _context.sent;
+            if (tags) {
+              console.log("Needs to update tags", tags);
+              console.log("insertId", insertId);
+              Article.editTags(insertId[0]['LAST_INSERT_ID()'], tags);
+            }
+            console.log("RESULT", result);
             return _context.abrupt("return", res.status(201).end());
-          case 11:
-            _context.prev = 11;
-            _context.t0 = _context["catch"](5);
+          case 19:
+            _context.prev = 19;
+            _context.t0 = _context["catch"](7);
             console.log("Error in addArticle", _context.t0);
             return _context.abrupt("return", res.status(400).send(_context.t0));
-          case 15:
+          case 23:
           case "end":
             return _context.stop();
         }
-      }, _callee, null, [[5, 11]]);
+      }, _callee, null, [[7, 19]]);
     }))();
   },
   editArticle: function editArticle(req, res) {
@@ -75,50 +88,109 @@ var Article = {
       }, _callee2, null, [[8, 14]]);
     }))();
   },
-  getArticles: function getArticles(req, res) {
+  deleteArticle: function deleteArticle(req, res) {
     return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3() {
-      var createQuery, rows;
+      var mySQLDeleted, articleId, createQuery, values;
       return _regeneratorRuntime().wrap(function _callee3$(_context3) {
         while (1) switch (_context3.prev = _context3.next) {
           case 0:
-            createQuery = "\n      SELECT * from article;\n    ";
-            _context3.prev = 1;
-            _context3.next = 4;
-            return _db["default"].query(createQuery);
-          case 4:
-            rows = _context3.sent;
-            return _context3.abrupt("return", res.status(200).send(rows));
-          case 8:
-            _context3.prev = 8;
-            _context3.t0 = _context3["catch"](1);
-            console.log("Error in getArticles", _context3.t0);
-            return _context3.abrupt("return", res.status(400).send(_context3.t0));
+            mySQLDeleted = (0, _moment["default"])(Date.now()).format('YYYY-MM-DD HH:mm:ss');
+            console.log("Running deleteArticle");
+            console.log("req.body", req.body);
+            articleId = req.body.id;
+            createQuery = "\n      UPDATE article \n      SET \n        removed = ?\n      WHERE\n        id = ?;\n     ";
+            values = [mySQLDeleted, articleId];
+            _context3.prev = 6;
+            _context3.next = 9;
+            return _db["default"].query(createQuery, values);
+          case 9:
+            return _context3.abrupt("return", res.status(201).end());
           case 12:
+            _context3.prev = 12;
+            _context3.t0 = _context3["catch"](6);
+            console.log("Error in deleteArticle", _context3.t0);
+            return _context3.abrupt("return", res.status(400).send(_context3.t0));
+          case 16:
           case "end":
             return _context3.stop();
         }
-      }, _callee3, null, [[1, 8]]);
+      }, _callee3, null, [[6, 12]]);
+    }))();
+  },
+  removePermanently: function removePermanently(req, res) {
+    return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee4() {
+      var articleIds, tagArticleQuery, createQuery, values;
+      return _regeneratorRuntime().wrap(function _callee4$(_context4) {
+        while (1) switch (_context4.prev = _context4.next) {
+          case 0:
+            articleIds = req.body.ids.join(",");
+            tagArticleQuery = "\n      DELETE from article_tag\n      WHERE\n        article_id IN (?)\n    ";
+            createQuery = "\n      DELETE from article\n      WHERE\n        removed \n      AND\n        id IN (?)\n    ";
+            values = [articleIds];
+            _context4.prev = 4;
+            _context4.next = 7;
+            return _db["default"].query(tagArticleQuery, values);
+          case 7:
+            _context4.next = 9;
+            return _db["default"].query(createQuery, values);
+          case 9:
+            return _context4.abrupt("return", res.status(201).end());
+          case 12:
+            _context4.prev = 12;
+            _context4.t0 = _context4["catch"](4);
+            console.log("Error in removePermanently", _context4.t0);
+            return _context4.abrupt("return", res.status(400).send(_context4.t0));
+          case 16:
+          case "end":
+            return _context4.stop();
+        }
+      }, _callee4, null, [[4, 12]]);
+    }))();
+  },
+  getArticles: function getArticles(req, res) {
+    return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee5() {
+      var createQuery, rows;
+      return _regeneratorRuntime().wrap(function _callee5$(_context5) {
+        while (1) switch (_context5.prev = _context5.next) {
+          case 0:
+            createQuery = "\n      SELECT * from article;\n    ";
+            _context5.prev = 1;
+            _context5.next = 4;
+            return _db["default"].query(createQuery);
+          case 4:
+            rows = _context5.sent;
+            return _context5.abrupt("return", res.status(200).send(rows));
+          case 8:
+            _context5.prev = 8;
+            _context5.t0 = _context5["catch"](1);
+            console.log("Error in getArticles", _context5.t0);
+            return _context5.abrupt("return", res.status(400).send(_context5.t0));
+          case 12:
+          case "end":
+            return _context5.stop();
+        }
+      }, _callee5, null, [[1, 8]]);
     }))();
   },
   editTags: function editTags(articleId, tags) {
     var _this = this;
-    return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee4() {
+    return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee6() {
       var tagQuery, tagArticleQuery, allTags, oldTags, newTags, existingTags, tagsRemove, _loop, i, _loop2, q, newTableTags, tagsFound, _loop3, _i;
-      return _regeneratorRuntime().wrap(function _callee4$(_context7) {
-        while (1) switch (_context7.prev = _context7.next) {
+      return _regeneratorRuntime().wrap(function _callee6$(_context9) {
+        while (1) switch (_context9.prev = _context9.next) {
           case 0:
             console.log("articleId", articleId);
             console.log("tags", tags);
             tagQuery = "\n      SELECT * FROM tag\n      ";
             tagArticleQuery = "\n      SELECT tag.id, tag.tag_name \n      FROM tag\n      JOIN article_tag \n      ON article_tag.tag_id = tag.id\n      WHERE article_tag.article_id = ?\n      ;\n    ";
-            _context7.next = 6;
+            _context9.next = 6;
             return _db["default"].query(tagQuery);
           case 6:
-            allTags = _context7.sent;
-            _context7.next = 9;
+            allTags = _context9.sent;
+            _context9.next = 9;
             return _db["default"].query(tagArticleQuery, [articleId]);
           case 9:
-            oldTags = _context7.sent;
+            oldTags = _context9.sent;
             console.log("oldTags", oldTags);
             console.log("allTags", allTags);
             newTags = [];
@@ -126,8 +198,8 @@ var Article = {
             tagsRemove = [];
             _loop = /*#__PURE__*/_regeneratorRuntime().mark(function _loop(i) {
               var tagHits;
-              return _regeneratorRuntime().wrap(function _loop$(_context4) {
-                while (1) switch (_context4.prev = _context4.next) {
+              return _regeneratorRuntime().wrap(function _loop$(_context6) {
+                while (1) switch (_context6.prev = _context6.next) {
                   case 0:
                     console.log("tag", tags[i]);
                     tagHits = oldTags.filter(function (x) {
@@ -140,27 +212,27 @@ var Article = {
                     }
                   case 3:
                   case "end":
-                    return _context4.stop();
+                    return _context6.stop();
                 }
               }, _loop);
             });
-            _context7.t0 = _regeneratorRuntime().keys(tags);
+            _context9.t0 = _regeneratorRuntime().keys(tags);
           case 17:
-            if ((_context7.t1 = _context7.t0()).done) {
-              _context7.next = 22;
+            if ((_context9.t1 = _context9.t0()).done) {
+              _context9.next = 22;
               break;
             }
-            i = _context7.t1.value;
-            return _context7.delegateYield(_loop(i), "t2", 20);
+            i = _context9.t1.value;
+            return _context9.delegateYield(_loop(i), "t2", 20);
           case 20:
-            _context7.next = 17;
+            _context9.next = 17;
             break;
           case 22:
             console.log("oldTags", oldTags);
             _loop2 = /*#__PURE__*/_regeneratorRuntime().mark(function _loop2(q) {
               var noTags;
-              return _regeneratorRuntime().wrap(function _loop2$(_context5) {
-                while (1) switch (_context5.prev = _context5.next) {
+              return _regeneratorRuntime().wrap(function _loop2$(_context7) {
+                while (1) switch (_context7.prev = _context7.next) {
                   case 0:
                     noTags = existingTags.filter(function (t) {
                       return t.text.toLowerCase() === oldTags[q].tag_name.toLowerCase();
@@ -170,20 +242,20 @@ var Article = {
                     }
                   case 2:
                   case "end":
-                    return _context5.stop();
+                    return _context7.stop();
                 }
               }, _loop2);
             });
-            _context7.t3 = _regeneratorRuntime().keys(oldTags);
+            _context9.t3 = _regeneratorRuntime().keys(oldTags);
           case 25:
-            if ((_context7.t4 = _context7.t3()).done) {
-              _context7.next = 30;
+            if ((_context9.t4 = _context9.t3()).done) {
+              _context9.next = 30;
               break;
             }
-            q = _context7.t4.value;
-            return _context7.delegateYield(_loop2(q), "t5", 28);
+            q = _context9.t4.value;
+            return _context9.delegateYield(_loop2(q), "t5", 28);
           case 28:
-            _context7.next = 25;
+            _context9.next = 25;
             break;
           case 30:
             console.log("tagsRemove", tagsRemove);
@@ -191,8 +263,8 @@ var Article = {
             tagsFound = [];
             _loop3 = /*#__PURE__*/_regeneratorRuntime().mark(function _loop3(_i) {
               var hits;
-              return _regeneratorRuntime().wrap(function _loop3$(_context6) {
-                while (1) switch (_context6.prev = _context6.next) {
+              return _regeneratorRuntime().wrap(function _loop3$(_context8) {
+                while (1) switch (_context8.prev = _context8.next) {
                   case 0:
                     hits = newTags.filter(function (q) {
                       return q.text.toLowerCase() === allTags[_i].tag_name.toLowerCase();
@@ -201,27 +273,27 @@ var Article = {
                     if (hits.length > 0) {
                       tagsFound.push(hits[0]);
                     }
-                    newTableTags = newTags.filter(function (tag) {
-                      return !tagsFound.includes(tag);
-                    });
-                  case 4:
+                  case 3:
                   case "end":
-                    return _context6.stop();
+                    return _context8.stop();
                 }
               }, _loop3);
             });
-            _context7.t6 = _regeneratorRuntime().keys(allTags);
+            _context9.t6 = _regeneratorRuntime().keys(allTags);
           case 35:
-            if ((_context7.t7 = _context7.t6()).done) {
-              _context7.next = 40;
+            if ((_context9.t7 = _context9.t6()).done) {
+              _context9.next = 40;
               break;
             }
-            _i = _context7.t7.value;
-            return _context7.delegateYield(_loop3(_i), "t8", 38);
+            _i = _context9.t7.value;
+            return _context9.delegateYield(_loop3(_i), "t8", 38);
           case 38:
-            _context7.next = 35;
+            _context9.next = 35;
             break;
           case 40:
+            newTableTags = newTags.filter(function (tag) {
+              return !tagsFound.includes(tag);
+            });
             console.log("newTableTags", newTableTags);
             _this.removeTags(tagsRemove, articleId);
             _this.insertTags(newTableTags, newTags, articleId);
@@ -229,189 +301,208 @@ var Article = {
             console.log("newTableTags", newTableTags);
             console.log("newTags", newTags);
             console.log("existingTags", existingTags);
-          case 47:
-          case "end":
-            return _context7.stop();
-        }
-      }, _callee4);
-    }))();
-  },
-  getStoryTags: function getStoryTags(req, res) {
-    return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee5() {
-      var createQuery, rows;
-      return _regeneratorRuntime().wrap(function _callee5$(_context8) {
-        while (1) switch (_context8.prev = _context8.next) {
-          case 0:
-            createQuery = "\n      SELECT * from tag;\n    ";
-            _context8.prev = 1;
-            _context8.next = 4;
-            return _db["default"].query(createQuery);
-          case 4:
-            rows = _context8.sent;
-            return _context8.abrupt("return", res.status(200).send(rows));
-          case 8:
-            _context8.prev = 8;
-            _context8.t0 = _context8["catch"](1);
-            console.log("Error in getStoryTags", _context8.t0);
-            return _context8.abrupt("return", res.status(400).send(_context8.t0));
-          case 12:
-          case "end":
-            return _context8.stop();
-        }
-      }, _callee5, null, [[1, 8]]);
-    }))();
-  },
-  getTagLinks: function getTagLinks(req, res) {
-    return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee6() {
-      var createQuery, rows;
-      return _regeneratorRuntime().wrap(function _callee6$(_context9) {
-        while (1) switch (_context9.prev = _context9.next) {
-          case 0:
-            createQuery = "\n      SELECT * from article_tag;\n    ";
-            _context9.prev = 1;
-            _context9.next = 4;
-            return _db["default"].query(createQuery);
-          case 4:
-            rows = _context9.sent;
-            return _context9.abrupt("return", res.status(200).send(rows));
-          case 8:
-            _context9.prev = 8;
-            _context9.t0 = _context9["catch"](1);
-            console.log("Error in getTagLinks", _context9.t0);
-            return _context9.abrupt("return", res.status(400).send(_context9.t0));
-          case 12:
+          case 48:
           case "end":
             return _context9.stop();
         }
-      }, _callee6, null, [[1, 8]]);
+      }, _callee6);
+    }))();
+  },
+  getStoryTags: function getStoryTags(req, res) {
+    return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee7() {
+      var createQuery, removeTagsQuery, emptyTagsQuery, tagIds, idsRemove, rows;
+      return _regeneratorRuntime().wrap(function _callee7$(_context10) {
+        while (1) switch (_context10.prev = _context10.next) {
+          case 0:
+            createQuery = "\n      SELECT * from tag;\n      ";
+            removeTagsQuery = "\n      DELETE FROM tag \n      WHERE    \n        id in (?)\n      ";
+            emptyTagsQuery = "\n      SELECT id FROM tag \n      WHERE tag.id NOT IN (\n        SELECT tag.id FROM tag INNER JOIN article_tag atag ON atag.tag_id = tag.id\n      );\n    ";
+            tagIds = [];
+            _context10.prev = 4;
+            _context10.next = 7;
+            return _db["default"].query(emptyTagsQuery);
+          case 7:
+            tagIds = _context10.sent;
+            idsRemove = tagIds.map(function (e) {
+              return e.id;
+            });
+            console.log("idsRemove", idsRemove);
+            if (!idsRemove.length) {
+              _context10.next = 13;
+              break;
+            }
+            _context10.next = 13;
+            return _db["default"].query(removeTagsQuery, [idsRemove]);
+          case 13:
+            _context10.next = 15;
+            return _db["default"].query(createQuery);
+          case 15:
+            rows = _context10.sent;
+            return _context10.abrupt("return", res.status(200).send(rows));
+          case 19:
+            _context10.prev = 19;
+            _context10.t0 = _context10["catch"](4);
+            console.log("Error in getStoryTags", _context10.t0);
+            return _context10.abrupt("return", res.status(400).send(_context10.t0));
+          case 23:
+          case "end":
+            return _context10.stop();
+        }
+      }, _callee7, null, [[4, 19]]);
+    }))();
+  },
+  getTagLinks: function getTagLinks(req, res) {
+    return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee8() {
+      var createQuery, rows;
+      return _regeneratorRuntime().wrap(function _callee8$(_context11) {
+        while (1) switch (_context11.prev = _context11.next) {
+          case 0:
+            createQuery = "\n      SELECT * from article_tag;\n    ";
+            _context11.prev = 1;
+            _context11.next = 4;
+            return _db["default"].query(createQuery);
+          case 4:
+            rows = _context11.sent;
+            return _context11.abrupt("return", res.status(200).send(rows));
+          case 8:
+            _context11.prev = 8;
+            _context11.t0 = _context11["catch"](1);
+            console.log("Error in getTagLinks", _context11.t0);
+            return _context11.abrupt("return", res.status(400).send(_context11.t0));
+          case 12:
+          case "end":
+            return _context11.stop();
+        }
+      }, _callee8, null, [[1, 8]]);
     }))();
   },
   insertTags: function insertTags(newTableTags, newTags, articleId) {
-    return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee7() {
+    return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee9() {
       var queryInsert, queryFind, queryInsertTagLink, q, dbNewTags, j, tag, s;
-      return _regeneratorRuntime().wrap(function _callee7$(_context10) {
-        while (1) switch (_context10.prev = _context10.next) {
+      return _regeneratorRuntime().wrap(function _callee9$(_context12) {
+        while (1) switch (_context12.prev = _context12.next) {
           case 0:
             queryInsert = "\n      INSERT INTO tag (tag_name)\n      VALUES (?)\n      ;\n    ";
             queryFind = "\n      SELECT * FROM tag \n      WHERE \n        tag_name = ?\n      LIMIT 1\n      ;\n      ";
             queryInsertTagLink = "\n      INSERT INTO article_tag (article_id, tag_id)\n      VALUES (?, ?)\n    ";
-            _context10.t0 = _regeneratorRuntime().keys(newTableTags);
+            _context12.t0 = _regeneratorRuntime().keys(newTableTags);
           case 4:
-            if ((_context10.t1 = _context10.t0()).done) {
-              _context10.next = 10;
+            if ((_context12.t1 = _context12.t0()).done) {
+              _context12.next = 10;
               break;
             }
-            q = _context10.t1.value;
-            _context10.next = 8;
+            q = _context12.t1.value;
+            _context12.next = 8;
             return _db["default"].query(queryInsert, [newTableTags[q].text]);
           case 8:
-            _context10.next = 4;
+            _context12.next = 4;
             break;
           case 10:
             console.log("newTags", newTags);
             dbNewTags = [];
-            _context10.t2 = _regeneratorRuntime().keys(newTags);
+            _context12.t2 = _regeneratorRuntime().keys(newTags);
           case 13:
-            if ((_context10.t3 = _context10.t2()).done) {
-              _context10.next = 22;
+            if ((_context12.t3 = _context12.t2()).done) {
+              _context12.next = 22;
               break;
             }
-            j = _context10.t3.value;
-            _context10.next = 17;
+            j = _context12.t3.value;
+            _context12.next = 17;
             return _db["default"].query(queryFind, [newTags[j].text]);
           case 17:
-            tag = _context10.sent;
+            tag = _context12.sent;
             console.log("tag from newTags", tag);
             dbNewTags.push(tag[0]);
-            _context10.next = 13;
+            _context12.next = 13;
             break;
           case 22:
             console.log("dbNewTags", dbNewTags);
-            _context10.t4 = _regeneratorRuntime().keys(dbNewTags);
+            _context12.t4 = _regeneratorRuntime().keys(dbNewTags);
           case 24:
-            if ((_context10.t5 = _context10.t4()).done) {
-              _context10.next = 31;
+            if ((_context12.t5 = _context12.t4()).done) {
+              _context12.next = 31;
               break;
             }
-            s = _context10.t5.value;
+            s = _context12.t5.value;
             console.log("dbNewTags[s]", dbNewTags[s]);
-            _context10.next = 29;
+            _context12.next = 29;
             return _db["default"].query(queryInsertTagLink, [articleId, dbNewTags[s].id]);
           case 29:
-            _context10.next = 24;
+            _context12.next = 24;
             break;
           case 31:
             console.log("dbNewTags", dbNewTags);
           case 32:
           case "end":
-            return _context10.stop();
+            return _context12.stop();
         }
-      }, _callee7);
+      }, _callee9);
     }))();
   },
   removeTags: function removeTags(tagsRemove, articleId) {
-    return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee8() {
+    return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee10() {
       var queryRemoveTags, findArticleTags, deleteTag, i, remainingTags;
-      return _regeneratorRuntime().wrap(function _callee8$(_context11) {
-        while (1) switch (_context11.prev = _context11.next) {
+      return _regeneratorRuntime().wrap(function _callee10$(_context13) {
+        while (1) switch (_context13.prev = _context13.next) {
           case 0:
             queryRemoveTags = "\n      DELETE FROM article_tag\n      WHERE \n        article_id = ?\n      AND\n        tag_id = ?\n    ";
             findArticleTags = "\n      SELECT * FROM article_tag\n      WHERE tag_id = ?\n    ";
             deleteTag = "\n      DELETE FROM TAG WHERE id = ?\n    ";
-            _context11.t0 = _regeneratorRuntime().keys(tagsRemove);
+            _context13.t0 = _regeneratorRuntime().keys(tagsRemove);
           case 4:
-            if ((_context11.t1 = _context11.t0()).done) {
-              _context11.next = 17;
+            if ((_context13.t1 = _context13.t0()).done) {
+              _context13.next = 18;
               break;
             }
-            i = _context11.t1.value;
-            _context11.next = 8;
+            i = _context13.t1.value;
+            _context13.next = 8;
             return _db["default"].query(queryRemoveTags, [articleId, tagsRemove[i].id]);
           case 8:
-            _context11.next = 10;
+            _context13.next = 10;
             return _db["default"].query(findArticleTags, [tagsRemove[i].id]);
           case 10:
-            remainingTags = _context11.sent;
+            remainingTags = _context13.sent;
             console.log("remainingTags", remainingTags);
             if (!(remainingTags.length < 1)) {
-              _context11.next = 15;
+              _context13.next = 16;
               break;
             }
-            _context11.next = 15;
+            console.log("Running SQL to remove tag");
+            _context13.next = 16;
             return _db["default"].query(deleteTag, [tagsRemove[i].id]);
-          case 15:
-            _context11.next = 4;
+          case 16:
+            _context13.next = 4;
             break;
-          case 17:
+          case 18:
           case "end":
-            return _context11.stop();
+            return _context13.stop();
         }
-      }, _callee8);
+      }, _callee10);
     }))();
   },
   getCategories: function getCategories(req, res) {
-    return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee9() {
+    return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee11() {
       var createQuery, rows;
-      return _regeneratorRuntime().wrap(function _callee9$(_context12) {
-        while (1) switch (_context12.prev = _context12.next) {
+      return _regeneratorRuntime().wrap(function _callee11$(_context14) {
+        while (1) switch (_context14.prev = _context14.next) {
           case 0:
             createQuery = "SELECT * FROM category";
-            _context12.prev = 1;
-            _context12.next = 4;
+            _context14.prev = 1;
+            _context14.next = 4;
             return _db["default"].query(createQuery);
           case 4:
-            rows = _context12.sent;
-            return _context12.abrupt("return", res.status(200).send(rows));
+            rows = _context14.sent;
+            return _context14.abrupt("return", res.status(200).send(rows));
           case 8:
-            _context12.prev = 8;
-            _context12.t0 = _context12["catch"](1);
-            console.log("Error in getCategories", _context12.t0);
-            return _context12.abrupt("return", res.status(400).send(_context12.t0));
+            _context14.prev = 8;
+            _context14.t0 = _context14["catch"](1);
+            console.log("Error in getCategories", _context14.t0);
+            return _context14.abrupt("return", res.status(400).send(_context14.t0));
           case 12:
           case "end":
-            return _context12.stop();
+            return _context14.stop();
         }
-      }, _callee9, null, [[1, 8]]);
+      }, _callee11, null, [[1, 8]]);
     }))();
   }
 };

@@ -6,16 +6,26 @@ import helper from "./helper.js"
 const Article = {
   async addArticle(req, res) {
     console.log("Running addArticle")
+    let tags = req.body.tags
     let mySQLCreated = moment(Date.now()).format('YYYY-MM-DD HH:mm:ss')
     let createQuery = `
       INSERT INTO article (heading, story, category, year_event, created, created_by)
       VALUES (?,?,?,?,?,?);
     `
+    
+    let idQuery = `SELECT LAST_INSERT_ID();`
     console.log("created", mySQLCreated)
     const values = [req.body.heading, req.body.story, req.body.category, req.body.year, mySQLCreated, req.user.username]
 
     try {
-      await db.query(createQuery, values)
+      let result = await db.query(createQuery, values)
+      let insertId = await db.query(idQuery)
+      if (tags) {
+        console.log("Needs to update tags", tags)
+        console.log("insertId", insertId)
+        Article.editTags(insertId[0]['LAST_INSERT_ID()'], tags)
+      }
+      console.log("RESULT", result)
       return res.status(201).end()
     } catch (error) {
       console.log("Error in addArticle", error)
@@ -57,6 +67,61 @@ const Article = {
       return res.status(400).send(error)
     }
   },
+
+  async deleteArticle(req, res) {
+    let mySQLDeleted = moment(Date.now()).format('YYYY-MM-DD HH:mm:ss')
+    console.log("Running deleteArticle")
+    console.log("req.body", req.body)
+    let articleId = req.body.id
+
+
+   let createQuery = `
+      UPDATE article 
+      SET 
+        removed = ?
+      WHERE
+        id = ?;
+     `
+  
+    const values = [mySQLDeleted, articleId]
+
+    try {
+      await db.query(createQuery, values)
+      return res.status(201).end()
+    } catch (error) {
+      console.log("Error in deleteArticle", error)
+      return res.status(400).send(error)
+    }
+  },
+
+  async removePermanently(req, res) {
+    let articleIds = req.body.ids.join(",")
+
+    let tagArticleQuery = `
+      DELETE from article_tag
+      WHERE
+        article_id IN (?)
+    `
+
+    let createQuery = `
+      DELETE from article
+      WHERE
+        removed 
+      AND
+        id IN (?)
+    `
+
+    const values = [articleIds]
+  
+    try {
+      await db.query(tagArticleQuery, values)
+      await db.query(createQuery, values)
+      return res.status(201).end()
+    } catch (error) {
+      console.log("Error in removePermanently", error)
+      return res.status(400).send(error)
+    }
+  },
   
   async getArticles(req, res) {
     let createQuery = `
@@ -89,6 +154,8 @@ const Article = {
       WHERE article_tag.article_id = ?
       ;
     `
+
+
 
     const allTags = await db.query(tagQuery)
     const oldTags = await db.query(tagArticleQuery, [articleId])
@@ -135,10 +202,9 @@ const Article = {
       if (hits.length > 0 ) {
         tagsFound.push(hits[0])
       }
-      
-      newTableTags = newTags.filter(tag => !tagsFound.includes(tag))
     }
 
+    newTableTags = newTags.filter(tag => !tagsFound.includes(tag))
     console.log("newTableTags", newTableTags)
 
     this.removeTags(tagsRemove, articleId)
@@ -149,17 +215,37 @@ const Article = {
     console.log("newTableTags", newTableTags)
     console.log("newTags", newTags)
     console.log("existingTags", existingTags)
+
   },
 
   async getStoryTags(req, res) {
+
+
     let createQuery = `
       SELECT * from tag;
+      `
+
+    let removeTagsQuery = `
+      DELETE FROM tag 
+      WHERE    
+        id in (?)
+      `
+
+    let emptyTagsQuery = `
+      SELECT id FROM tag 
+      WHERE tag.id NOT IN (
+        SELECT tag.id FROM tag INNER JOIN article_tag atag ON atag.tag_id = tag.id
+      );
     `
+    let tagIds = []
     try {
-      const rows  = await db.query(createQuery)
-
-      // console.log("Rows from getStoryTags", rows)
-
+      tagIds = await db.query(emptyTagsQuery)
+      let idsRemove = tagIds.map(e=> e.id)
+      console.log("idsRemove", idsRemove)
+      if (idsRemove.length) {
+        await db.query(removeTagsQuery, [idsRemove])
+      }
+      let rows = await db.query(createQuery)
       return res.status(200).send(rows)
     } catch (error) {
       console.log("Error in getStoryTags", error)
@@ -249,6 +335,7 @@ const Article = {
       console.log("remainingTags", remainingTags)
 
       if (remainingTags.length < 1) {
+        console.log("Running SQL to remove tag")
         await db.query(deleteTag, [tagsRemove[i].id])
       }
     }

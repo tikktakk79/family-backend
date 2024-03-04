@@ -45,32 +45,31 @@ var Auth = {
             return _db["default"].query(text, [decoded.username]);
           case 11:
             rows = _context.sent;
-            console.log("Token verification query worked");
             if (rows[0]) {
-              _context.next = 16;
+              _context.next = 15;
               break;
             }
             console.log("INVALID TOKEN PROVIDED!!!");
             return _context.abrupt("return", res.status(401).send({
               message: "The token you provided is invalid"
             }));
-          case 16:
+          case 15:
             req.user = {
               username: decoded.username
             };
             next();
-            _context.next = 24;
+            _context.next = 23;
             break;
-          case 20:
-            _context.prev = 20;
+          case 19:
+            _context.prev = 19;
             _context.t0 = _context["catch"](3);
             console.log("Some unidentified error in token verification");
             return _context.abrupt("return", res.status(400).send(_context.t0));
-          case 24:
+          case 23:
           case "end":
             return _context.stop();
         }
-      }, _callee, null, [[3, 20]]);
+      }, _callee, null, [[3, 19]]);
     }))();
   }
 };

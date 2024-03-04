@@ -44,6 +44,8 @@ app.post("/api/login", User.loginUser);
 app.post("/api/createuser", _Auth["default"].verifyToken, User.createUser);
 app.post("/api/addarticle", _Auth["default"].verifyToken, _article["default"].addArticle);
 app.post("/api/editarticle", _Auth["default"].verifyToken, _article["default"].editArticle);
+app.post("/api/deletearticle", _Auth["default"].verifyToken, _article["default"].deleteArticle);
+app.post("/api/removepermanently", _Auth["default"].verifyToken, _article["default"].removePermanently);
 app.get("/api/getarticles", _Auth["default"].verifyToken, _article["default"].getArticles);
 app.get("/api/getstorytags", _Auth["default"].verifyToken, _article["default"].getStoryTags);
 app.get("/api/gettaglinks", _Auth["default"].verifyToken, _article["default"].getTagLinks);
