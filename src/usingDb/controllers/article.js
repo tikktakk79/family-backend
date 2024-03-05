@@ -13,19 +13,22 @@ const Article = {
       VALUES (?,?,?,?,?,?);
     `
     
-    let idQuery = `SELECT LAST_INSERT_ID();`
+    let idQuery = `SELECT MAX(id) from article;`
     console.log("created", mySQLCreated)
     const values = [req.body.heading, req.body.story, req.body.category, req.body.year, mySQLCreated, req.user.username]
 
     try {
       let result = await db.query(createQuery, values)
+      console.log("RESULT", result)
       let insertId = await db.query(idQuery)
       if (tags) {
         console.log("Needs to update tags", tags)
         console.log("insertId", insertId)
-        Article.editTags(insertId[0]['LAST_INSERT_ID()'], tags)
+        let lastId = insertId[0]['MAX(id)']
+        console.log("lastId", lastId)
+        Article.editTags(lastId, tags)
       }
-      console.log("RESULT", result)
+
       return res.status(201).end()
     } catch (error) {
       console.log("Error in addArticle", error)
@@ -225,6 +228,17 @@ const Article = {
       SELECT * from tag;
       `
 
+    try {
+
+      let rows = await db.query(createQuery)
+      return res.status(200).send(rows)
+    } catch (error) {
+      console.log("Error in getStoryTags", error)
+      return res.status(400).send(error)
+    }
+  },
+
+  async removeEmptyTags(req, res) {
     let removeTagsQuery = `
       DELETE FROM tag 
       WHERE    
@@ -237,7 +251,9 @@ const Article = {
         SELECT tag.id FROM tag INNER JOIN article_tag atag ON atag.tag_id = tag.id
       );
     `
+    
     let tagIds = []
+
     try {
       tagIds = await db.query(emptyTagsQuery)
       let idsRemove = tagIds.map(e=> e.id)
@@ -245,10 +261,8 @@ const Article = {
       if (idsRemove.length) {
         await db.query(removeTagsQuery, [idsRemove])
       }
-      let rows = await db.query(createQuery)
-      return res.status(200).send(rows)
     } catch (error) {
-      console.log("Error in getStoryTags", error)
+      console.log("Error inremoveEmptyTags", error)
       return res.status(400).send(error)
     }
   },
