@@ -246,6 +246,55 @@ const User = {
     }
   },
 
+  async changePassword(req, res) {
+    console.log("Username from changePassword:", req.user.username),
+    console.log("New password:", req.body.newPassword)
+
+    if (!req.body.password || !req.body.newPassword) {
+      return res.status(400).send({ message: "Alla fält är inte ifyllda" })
+    }
+    console.log("222We got to here!")
+    const text = "SELECT * FROM user WHERE username = ?"
+
+    try {
+      const rows = await db.query(text, [req.user.username])
+      console.log("Queryn funkade")
+      if (!rows[0]) {
+        return res
+          .status(400)
+          .send({ message: "Inloggningsuppgifterna du angav är felaktiga" })
+      }
+      console.log("333We got to here!")
+      console.log("RÅWWS:", rows)
+
+      if (!helper.comparePassword(rows[0].passwd, req.body.password)) {
+        console.log("Compare pasword sket sig..")
+        return res
+          .status(400)
+          .send({ message: "badPassword" })
+      }
+
+      console.log("KOM enda hit, lösenordet stämmer")
+      const passwordQuery =
+        `UPDATE user
+          SET passwd = ?
+          WHERE username=?`
+
+      const hashPassword = helper.hashPassword(req.body.newPassword)
+      try {
+        await db.query(passwordQuery, [
+          hashPassword, req.user.username
+        ])
+        console.log("Lösenord bytt")
+        return res.status(204).send()
+      } catch (error) {
+        return res.status(400).send(error)
+      }
+    } catch (error) {
+      return res.status(400).send(error)
+    }
+  },
+
   async getUserLevel(req, res) {
     const createQuery =
     `SELECT accessgroup

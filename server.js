@@ -44,6 +44,7 @@ app.get("/", (req, res) => {
 
 app.post("/api/login", User.loginUser)
 app.post("/api/createuser", Auth.verifyToken, User.createUser)
+app.post("/api/changepassword", Auth.verifyToken, User.changePassword)
 app.post("/api/addarticle", Auth.verifyToken, Article.addArticle)
 app.post("/api/editarticle", Auth.verifyToken, Article.editArticle)
 app.post("/api/deletearticle", Auth.verifyToken, Article.deleteArticle)
