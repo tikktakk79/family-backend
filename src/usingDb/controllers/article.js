@@ -135,6 +135,7 @@ const Article = {
 
       // console.log("Rows from getArticle", rows)
       // console.log("rows", rows)
+      console.log("REQ.USERLEVEL", req.userLevel)
       return res.status(200).send(rows)
     } catch (error) {
       console.log("Error in getArticles", error)

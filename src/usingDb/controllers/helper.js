@@ -41,7 +41,7 @@ const Helper = {
       process.env.SECRET,
       { expiresIn: "7d" }
     )
-    console.log("Hello AGAIN from generatToken!")
+    console.log("Hello AGAIN from generateToken!")
     return token
   },
   createVerificationToken(email) {

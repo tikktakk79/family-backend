@@ -14,6 +14,9 @@ const User = {
    * @returns {object} reflection object
    */
   async createUser(req, res) {
+    if (req.userLevel != "admin") {
+      return res.status(400).send({ message: "Din användare har inte behörighet att skapa användare"})
+    }
     console.log("Entering create function")
     if (!req.body.password || !req.body.username || !req.body.email) {
       return res.status(400).send({ message: "Alla fält är inte ifyllda" })
@@ -55,6 +58,7 @@ const User = {
       console.log("Before create query in db")
       await db.query(createQuery, values)
       console.log("After create query")
+      return res.status(201).end()
     } catch (error) {
       console.log("ERROR in register", error)
       console.log("error routine", error.code);
@@ -156,19 +160,6 @@ const User = {
     } catch (error) {
       return res.status(400).send(error)
     }
-  },
-
-  getUserLevel(req, res) {
-    console.log("Running getUserLevel on backend")
-
-    const getUser = `
-      SELECT accessgroup
-      from user
-      where 
-    
-    `
-
-    
   },
 
   async updateUser(req, res) {
@@ -295,20 +286,8 @@ const User = {
     }
   },
 
-  async getUserLevel(req, res) {
-    const createQuery =
-    `SELECT accessgroup
-    FROM user
-    WHERE username LIKE ?`
-
-    try {
-      console.log("req.user.id", req.user.id)
-      const rows = await db.query(createQuery, [req.user.username])
-      console.log("USER data to send: ", rows)
-      return res.status(201).send(rows)
-    } catch (error) {
-      return res.status(400).send(error)
-    }
+  async getUserLevel(req, res,) {
+      return res.status(201).send(req.userLevel)
   },
 
   async searchUsers(req, res) {
@@ -390,7 +369,6 @@ const User = {
     } 
     console.log("Verification success")
     res.sendFile("verification-success.html", { root: path.join(__dirname, '../../../public') }) 
- 
   }
 }
 
