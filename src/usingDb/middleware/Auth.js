@@ -20,7 +20,7 @@ const Auth = {
       const text = `select a.name as accessgroup, u.id as userid from user as u
         left join accessgroups as a
         on u.accessgroup_id = a.id
-        where u.username = ?
+      where u.username = ?
       `
       const rows = await db.query(text, [decoded.username])
       // console.log("Token verification query worked")
@@ -33,7 +33,7 @@ const Auth = {
       }
       req.user = { username: decoded.username }
       req.userLevel = rows[0].accessgroup
-      req.userId = rows[0].id
+      req.userId = rows[0].userid
       next()
     } catch (error) {
       console.log("Some unidentified error in token verification")

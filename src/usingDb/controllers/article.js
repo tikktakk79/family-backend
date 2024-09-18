@@ -1,6 +1,9 @@
 import moment from "moment"
 import db from "../db"
 import helper from "./helper.js"
+import path from "path"
+import fs from 'fs'
+import sharp from "sharp"
 
 
 const Article = {
@@ -15,7 +18,7 @@ const Article = {
     
     let idQuery = `SELECT MAX(id) from article;`
     console.log("created", mySQLCreated)
-    const values = [req.body.heading, req.body.story, req.body.category, req.body.year, mySQLCreated, req.user.username]
+    const values = [req.body.heading, req.body.story, req.body.category, req.body.year, mySQLCreated, req.userId]
 
     try {
       let result = await db.query(createQuery, values)
@@ -41,6 +44,7 @@ const Article = {
     console.log("req.body", req.body)
     let tags = req.body.tags
     console.log("tags", tags)
+    console.log('User Id from editArticle', req.userId)
 
     if (tags) {
       console.log("Needs to update tags", tags)
@@ -60,7 +64,7 @@ const Article = {
         id = ?;
      `
   
-    const values = [req.body.heading, req.body.story, req.body.category, req.body.year, mySQLUpdated, req.user.username, req.body.id]
+    const values = [req.body.heading, req.body.story, req.body.category, req.body.year, mySQLUpdated, req.userId, req.body.id]
 
     try {
       await db.query(createQuery, values)
@@ -128,7 +132,11 @@ const Article = {
   
   async getArticles(req, res) {
     let createQuery = `
-      SELECT * from article;
+      select a.id, a.heading, a.story, a.year_event, a.category, a.updated, a.created, a.removed, u.username as created_by, uu.username as updated_by from article as a
+      left join user as u 
+      on a.created_by = u.id
+      left join user uu
+      on a.updated_by = uu.id;
     `
     try {
       const rows  = await db.query(createQuery)
@@ -366,6 +374,50 @@ const Article = {
       console.log("Error in getCategories", error)
       return res.status(400).send(error)
     }
+  },
+  uploadImage(req, res) {
+    let dir = req.file.destination
+    
+    let fileExt = path.extname(req.body.user_filename)
+    let fileName = path.basename(req.body.user_filename, fileExt)
+    let num = 0;
+    
+
+    let baseFolder = path.dirname(dir) + '/public/images/fullsize/'
+
+    console.log("DIR", dir)
+    console.log("baseFolder", baseFolder)
+    console.log("fileName", fileName)
+    console.log("EXT",fileExt)
+
+    let fullPath = baseFolder + fileName + fileExt
+
+    while (fs.existsSync(fullPath)) {
+      fullPath = `${baseFolder}${fileName}_${num++}${fileExt}`;
+    }
+
+
+    let finalFilename = path.basename(fullPath)
+
+    console.log("UPLOADING IMAGE!!!")
+    console.log("REQ body", req.body)
+    console.log("FILE", req.file)
+    console.log("filename original", req.file.originalname)
+    console.log("filename", req.file.filename)
+
+    sharp
+    
+    fs.rename(req.file.path, fullPath, ()=> {
+      sharp(fullPath)
+        .resize({
+          width: 1000,
+          height: 1000,
+          fit: sharp.fit.inside,  // Ensures the image fits within the box, preserving aspect ratio
+          withoutEnlargement: true})
+        .toFile('output.jpeg', (err, info) => { console.log(err) });
+
+      return res.json({file: finalFilename})
+    })
   }
 }
 
