@@ -382,20 +382,28 @@ const Article = {
     let fileName = path.basename(req.body.user_filename, fileExt)
     let num = 0;
     
+    let baseFolder = path.dirname(dir) + '/public/images/'
+    let fullFolder = baseFolder + 'fullsize/'
+    let midFolder = baseFolder + 'medium/'
+    let smallFolder = baseFolder + 'small/'
 
-    let baseFolder = path.dirname(dir) + '/public/images/fullsize/'
+    
 
     console.log("DIR", dir)
     console.log("baseFolder", baseFolder)
     console.log("fileName", fileName)
     console.log("EXT",fileExt)
 
-    let fullPath = baseFolder + fileName + fileExt
-
+    let fullPath = fullFolder + fileName + fileExt
+   
     while (fs.existsSync(fullPath)) {
-      fullPath = `${baseFolder}${fileName}_${num++}${fileExt}`;
+      fullPath = `${fullFolder}${fileName}_${num++}${fileExt}`;
     }
 
+    let newFilename = path.basename(fullPath)
+
+    let midPath = midFolder + "mid_" + newFilename 
+    let smallPath = smallFolder + "small_" + newFilename
 
     let finalFilename = path.basename(fullPath)
 
@@ -414,10 +422,20 @@ const Article = {
           height: 1000,
           fit: sharp.fit.inside,  // Ensures the image fits within the box, preserving aspect ratio
           withoutEnlargement: true})
-        .toFile('output.jpeg', (err, info) => { console.log(err) });
-
+        .toFile(midPath, (err, info) => { console.log(err) 
+      });
+      sharp(fullPath)
+        .resize({
+          height: 150,
+          })
+        .toFile(smallPath, (err, info) => { console.log(err) 
+      }) 
       return res.json({file: finalFilename})
     })
+    
+    
+    
+
   }
 }
 
