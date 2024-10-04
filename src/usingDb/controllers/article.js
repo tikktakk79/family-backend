@@ -422,20 +422,16 @@ const Article = {
           height: 1000,
           fit: sharp.fit.inside,  // Ensures the image fits within the box, preserving aspect ratio
           withoutEnlargement: true})
-        .toFile(midPath, (err, info) => { console.log(err) 
-      });
-      sharp(fullPath)
-        .resize({
-          height: 150,
-          })
-        .toFile(smallPath, (err, info) => { console.log(err) 
-      }) 
-      return res.json({file: finalFilename})
+        .toFile(midPath).then(()=>{     
+          sharp(fullPath)
+            .resize({
+              height: 150,
+              })
+            .toFile(smallPath).then(()=> {
+              return res.json({file: finalFilename})
+            })
+        })
     })
-    
-    
-    
-
   }
 }
 
