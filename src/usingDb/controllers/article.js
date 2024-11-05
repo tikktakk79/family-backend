@@ -277,13 +277,14 @@ const Article = {
   },
 
   async getTagLinks(req, res) {
+    console.log("Running getTagLinks")
     let createQuery = `
       SELECT * from article_tag;
     `
     try {
       const rows  = await db.query(createQuery)
 
-      // console.log("Rows from getTagLinks", rows)
+      console.log("Rows from getTagLinks", rows)
 
       return res.status(200).send(rows)
     } catch (error) {
