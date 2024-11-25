@@ -4,6 +4,7 @@ import helper from "./helper.js"
 import path from "path"
 import fs from 'fs'
 import sharp from "sharp"
+var sanitize = require("sanitize-filename");
 
 
 const Article = {
@@ -380,7 +381,7 @@ const Article = {
     let dir = req.file.destination
     
     let fileExt = path.extname(req.body.user_filename)
-    let fileName = path.basename(req.body.user_filename, fileExt)
+    let fileName = sanitize(path.basename(req.body.user_filename, fileExt))
     let num = 0;
     
     let baseFolder = path.dirname(dir) + '/public/images/'

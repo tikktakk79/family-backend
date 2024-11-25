@@ -53,8 +53,11 @@ if (process.env.NODE_ENV === "development") {
   allowed = ["https://sjoburger.com", "http://sjoburger.com"];
 }
 var corsOptions = {
-  origin: allowed
+  origin: allowed,
+  methods: ['GET', 'POST'],        // Add any other HTTP methods your app supports
+  allowedHeaders: ['Content-Type', 'Authorization', 'x-access-token', 'ngrok-skip-browser-warning'],  // Specify any allowed headers
 };
+app.options('*', cors(corsOptions));  
 app.use(cors(corsOptions));
 app.use(express.json({
   extended: true,
@@ -71,6 +74,10 @@ app.get("/", function (req, res) {
     message: "YAY! Congratulations! Your first endpoint is working"
   });
 });
+app.use((req, res, next) => {
+  console.log("Response Headers:", res.getHeaders());
+  next();
+});
 app.post("/api/login", User.loginUser);
 app.post("/api/createuser", _Auth["default"].verifyToken, User.createUser);
 app.post("/api/changepassword", _Auth["default"].verifyToken, User.changePassword);
@@ -84,8 +91,9 @@ app.get("/api/removeemptytags", _Auth["default"].verifyToken, _article["default"
 app.get("/api/gettaglinks", _Auth["default"].verifyToken, _article["default"].getTagLinks);
 app.get("/api/getcategories", _Auth["default"].verifyToken, _article["default"].getCategories);
 app.get("/api/getuserlevel", _Auth["default"].verifyToken, User.getUserLevel);
-app.post("/api/uploadimage", [_Auth["default"].verifyToken, upload.single('file')], _article["default"].uploadImage);
+app.post("/api/uploadimage", cors(corsOptions), upload.single('file'), _article["default"].uploadImage);
 var PORT = process.env.PORT || 3000;
+
 app.listen(PORT, function () {
   console.log("Our app is running on port ".concat(PORT));
   //logger.info("App is up and running")
