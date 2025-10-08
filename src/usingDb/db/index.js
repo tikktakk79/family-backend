@@ -8,7 +8,10 @@ let poolObject = {
   connectionString: process.env.DATABASE_URL
 }
 
-if (process.env.DATABASE_URL && !process.env.DATABASE_URL.includes("localhost")) {
+const DATABASE_URL = `mysql://${process.env.MYSQL_USER}:${process.env.MYSQL_PASSWORD}` +
+  `@${process.env.MYSQL_HOST}:3306/${process.env.MYSQL_DB}`;
+
+if (DATABASE_URL && !DATABASE_URL.includes("localhost")) {
   poolObject.ssl = {
     rejectUnauthorized: false
   }
@@ -42,7 +45,7 @@ export default {
           conn.query(text, params, (err, rows) => {
             if (err) {
               console.log("Query failed", err)
-              reject (err)
+              reject(err)
             } else {
               // console.log("Query resolved")
               // console.log(rows)

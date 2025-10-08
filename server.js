@@ -47,7 +47,8 @@ const upload = multer({
 console.log("Value of NODE_ENV", process.env.NODE_ENV);
 if (process.env.NODE_ENV === "development") {
   console.log("NODE_ENV development");
-  allowed = ["http://localhost:8080"];
+  allowed = 
+  ["http://localhost:8080", "http://localhost:8081", "http://100.103.95.102:8080","http://100.103.95.102:8081", "http://100.103.95.102:8082"];
 } else {
   console.log("NODE_ENV production");
   allowed = ["https://sjoburger.com", "http://sjoburger.com"];
