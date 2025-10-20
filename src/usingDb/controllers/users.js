@@ -119,7 +119,7 @@ const User = {
       if (!helper.comparePassword(rows[0].passwd, req.body.password)) {
         console.log("Compare pasword sket sig..")
         let errObj = {statusText: "Current password does not match"}
-        res.status(400).send(errObj)
+        res.status(401).send(errObj)
         return
       }
 
